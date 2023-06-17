@@ -1,2 +1,4 @@
 # Use Google style in this project
 BasedOnStyle: Google
+# Turn off include sorting
+SortIncludes: 'false'
