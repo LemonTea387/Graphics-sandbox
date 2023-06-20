@@ -1,9 +1,15 @@
 [
 {
   "directory": "D:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build",
-  "command": "D:\\cli-tools\\mingw64\\bin\\c++.exe -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/include -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build/_deps/glfw-src/include -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build/_deps/glad-build/include -o CMakeFiles\\OpenGLSandbox.dir\\src\\main.cpp.obj -c D:\\Workspace\\Workspace_VisualStudio\\Workspace_C++\\opengl_sandbox\\src\\main.cpp",
+  "command": "D:\\cli-tools\\mingw64\\bin\\c++.exe -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/include -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/external/stb_image -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build/_deps/glfw-src/include -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build/_deps/glad-build/include -o CMakeFiles\\OpenGLSandbox.dir\\src\\main.cpp.obj -c D:\\Workspace\\Workspace_VisualStudio\\Workspace_C++\\opengl_sandbox\\src\\main.cpp",
   "file": "D:\\Workspace\\Workspace_VisualStudio\\Workspace_C++\\opengl_sandbox\\src\\main.cpp",
   "output": "CMakeFiles\\OpenGLSandbox.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "D:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build",
+  "command": "D:\\cli-tools\\mingw64\\bin\\c++.exe -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/include -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/external/stb_image -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build/_deps/glfw-src/include -ID:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build/_deps/glad-build/include -o CMakeFiles\\OpenGLSandbox.dir\\src\\stb_image.cpp.obj -c D:\\Workspace\\Workspace_VisualStudio\\Workspace_C++\\opengl_sandbox\\src\\stb_image.cpp",
+  "file": "D:\\Workspace\\Workspace_VisualStudio\\Workspace_C++\\opengl_sandbox\\src\\stb_image.cpp",
+  "output": "CMakeFiles\\OpenGLSandbox.dir\\src\\stb_image.cpp.obj"
 },
 {
   "directory": "D:/Workspace/Workspace_VisualStudio/Workspace_C++/opengl_sandbox/build",

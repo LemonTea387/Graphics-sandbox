@@ -31,6 +31,7 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/glfw/glfw
         GIT_TAG aa80d24d01d150e26d664ff2d5da22e95db6bb82 # Release 3.3.8
 )
+# GLAD
 FetchContent_Declare(
         glad
         GIT_REPOSITORY https://github.com/Dav1dde/glad.git
@@ -51,4 +52,7 @@ endif()
 FetchContent_MakeAvailable(glad)
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME} PRIVATE
+  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_SOURCE_DIR}/external/stb_image")
 target_link_libraries(${PROJECT_NAME} glfw glad)
