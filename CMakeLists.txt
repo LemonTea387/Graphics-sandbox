@@ -24,6 +24,8 @@ file(GLOB_RECURSE HEADER_FILES
 # Include directories
 include_directories(${PROJECT_INCLUDE_DIR})
 
+find_package(OpenGL REQUIRED)
+
 include(FetchContent)
 # GLFW
 FetchContent_Declare(
@@ -37,6 +39,11 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/Dav1dde/glad.git
 )
 
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_PROGRESS TRUE
+)
 FetchContent_GetProperties(glfw)
 if(NOT glfw_POPULATED)
     FetchContent_Populate(glfw)
@@ -49,10 +56,12 @@ if(NOT glfw_POPULATED)
     add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
 endif()
 
-FetchContent_MakeAvailable(glad)
+FetchContent_MakeAvailable(glad glm)
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE
+  "${glm_SOURCE_DIR}"
+  "${OPENGL_INCLUDE_DIR}"
   "${CMAKE_SOURCE_DIR}/include"
   "${CMAKE_SOURCE_DIR}/external/stb_image")
-target_link_libraries(${PROJECT_NAME} glfw glad)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad)
