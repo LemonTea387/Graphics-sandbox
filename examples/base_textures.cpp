@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <iostream>
+#include <cmath>
 #include "stb_image.h"
 
 const char* vertexShaderSource =
@@ -126,7 +127,7 @@ int main(int argc, char** argv) {
     glUseProgram(shaderProgram);
 
     timeValue = glfwGetTime();
-    xOffset = sin(timeValue) * 0.4f;
+    xOffset = std::sin(timeValue) * 0.4f;
     glUniform1f(vertexOffsetLocation, xOffset);
 
     glBindTexture(GL_TEXTURE_2D, texture);

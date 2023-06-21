@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <iostream>
+#include <cmath>
 
 const char* vertexShaderSource =
     "#version 330 core\n"
@@ -68,7 +69,7 @@ int main(int argc, char** argv) {
     glUseProgram(shaderProgram);
 
     float timeValue = glfwGetTime();
-    float xOffset = sin(timeValue)*0.4f;
+    float xOffset = std::sin(timeValue) * 0.4f;
     int vertexOffsetLocation = glGetUniformLocation(shaderProgram, "xOffset");
     glUniform1f(vertexOffsetLocation, xOffset);
 
@@ -76,7 +77,7 @@ int main(int argc, char** argv) {
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     // 2nd one make it 180 out of phase
-    xOffset = sin(timeValue+3.14159)*0.4f;
+    xOffset = std::sin(timeValue + 3.14159) * 0.4f;
     glUniform1f(vertexOffsetLocation, xOffset);
     glDrawArrays(GL_TRIANGLES, 3, 3);
     glfwPollEvents();
