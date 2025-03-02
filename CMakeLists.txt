@@ -1,10 +1,14 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
+
+# Set C++ version
+set(CMAKE_CXX_STANDARD 23)
 
 project(
   OpenGLSandbox
   VERSION 0.0.1
   DESCRIPTION "A place where I keep track of things to play around with opengl."
   LANGUAGES CXX C
+
 )
 
 find_package(OpenGL REQUIRED)
