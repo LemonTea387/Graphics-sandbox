@@ -44,24 +44,18 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/g-truc/glm.git
         GIT_PROGRESS TRUE
 )
-FetchContent_GetProperties(glfw)
-if(NOT glfw_POPULATED)
-    FetchContent_Populate(glfw)
 
-    set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
-    set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
-    set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
-    set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
+# GLFW
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs")
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs")
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
 
-    add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
-endif()
-
-FetchContent_MakeAvailable(glad glm)
+FetchContent_MakeAvailable(glfw glad glm)
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE
   "${glm_SOURCE_DIR}"
   "${OPENGL_INCLUDE_DIR}"
   "${CMAKE_SOURCE_DIR}/include"
-  "${CMAKE_SOURCE_DIR}/external/stb_image")
+  "${CMAKE_SOURCE_DIR}/lib/stb_image")
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad)
