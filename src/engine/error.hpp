@@ -1,0 +1,13 @@
+#ifndef ENGINEERROR_H
+#define ENGINEERROR_H
+
+enum class EngineError {
+  GLFW_ERROR,
+  GENERIC_ENGINE_ERROR,
+
+  ASSET_LOADING_ERROR,
+
+  NOT_YET_IMPLEMENTED,
+};
+
+#endif
