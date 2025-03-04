@@ -1,11 +1,9 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#ifndef ENGINE_APPLICATION_H
+#define ENGINE_APPLICATION_H
 
 #include <cstdint>
-#include <expected>
-#include <memory>
 #include <string>
-#include "engine/error.hpp"
+
 #include "engine/window.hpp"
 
 struct ApplicationSpec {
@@ -16,21 +14,17 @@ struct ApplicationSpec {
 
 class Application {
  public:
-  static std::expected<std::unique_ptr<Application>, EngineError> create(
-      const ApplicationSpec &);
-  ~Application();
+  virtual ~Application() = 0;
+  Application() = default;
   Application(const Application &other) = delete;
-  Application &operator=(const Application &other) = delete;
   Application(const Application &&other) = delete;
+  Application &operator=(const Application &other) = delete;
   Application &operator=(const Application &&other) = delete;
 
-  Window &getWindow();
-
-  void run();
-
- private:
-  Application();
-  std::unique_ptr<Window> m_Window;
+  virtual Window &getWindow() = 0;
+  virtual void run() = 0;
 };
 
+// Cheeky hack for satisfying pure virtual destructors.
+inline Application::~Application() {}
 #endif
