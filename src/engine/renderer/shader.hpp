@@ -22,6 +22,7 @@ class Shader {
   void bind() const;
   void unbind() const;
 
+  void setBool(const std::string &name, bool value);
   void setInt(const std::string &name, int value);
   void setIntArray(const std::string &name, int *values, uint32_t count);
   void setFloat(const std::string &name, float value);
