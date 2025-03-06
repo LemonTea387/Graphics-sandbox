@@ -5,7 +5,8 @@
 class Program {
  public:
   virtual ~Program() = 0;
-  Program(std::string name) : m_Name{name} {};
+  Program(std::string name, std::string description)
+      : m_Name{name}, m_Description{description} {};
   Program(const Program &other) = delete;
   Program(const Program &&other) = delete;
   Program &operator=(const Program &other) = delete;
@@ -14,11 +15,12 @@ class Program {
   virtual void setup() = 0;
   virtual void loop() = 0;
   virtual void cleanup() = 0;
-  virtual const std::string &getDescription() const = 0;
+  const std::string &getDescription() const { return m_Description; };
   const std::string &getName() const { return m_Name; };
 
  private:
   std::string m_Name;
+  std::string m_Description;
 };
 inline Program::~Program() {}
 

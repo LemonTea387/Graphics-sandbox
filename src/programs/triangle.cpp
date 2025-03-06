@@ -43,11 +43,8 @@ void TriangleProgram::cleanup() {
   m_Active = false;
 }
 
-const std::string &TriangleProgram::getDescription() const {
-  return m_Description;
-}
-
-TriangleProgram::TriangleProgram() : Program("Triangle") {}
+TriangleProgram::TriangleProgram()
+    : Program("Triangle", "Stupid program to display a triangle.") {}
 TriangleProgram::~TriangleProgram() {
   if (m_Active) cleanup();
 }
