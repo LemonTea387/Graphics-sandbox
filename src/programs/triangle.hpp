@@ -12,8 +12,10 @@ class TriangleProgram : public Program {
   void setup() override;
   void loop() override;
   void cleanup() override;
+  const std::string &getDescription() const override;
 
  private:
+  std::string m_Description{"Stupid program to display a triangle."};
   std::unique_ptr<Shader> m_Shader;
   GLuint m_Vao;
   GLuint m_Vbo;

@@ -37,27 +37,42 @@ FetchContent_MakeAvailable(glfw glm)
 # GLAD
 file(GLOB GLAD_SRC ${CMAKE_SOURCE_DIR}/lib/glad/src/gl.c)
 
+# IMGUI
+file(GLOB IMGUI_SRC 
+        ${CMAKE_SOURCE_DIR}/lib/imgui/*.cpp
+        ${CMAKE_SOURCE_DIR}/lib/imgui/misc/cpp/imgui_stdlib.*
+        ${CMAKE_SOURCE_DIR}/lib/imgui/backends/imgui_impl_opengl3.cpp
+        ${CMAKE_SOURCE_DIR}/lib/imgui/backends/imgui_impl_glfw.cpp
+)
+
+# External Dependencies
+set(DEPS ${GLAD_SRC} ${IMGUI_SRC})
+set(DEPS_INCLUDE_DIR 
+  "${CMAKE_SOURCE_DIR}/lib/imgui/"
+  ${glm_SOURCE_DIR}
+  ${OPENGL_INCLUDE_DIR}
+  # STBIMAGE
+  "${CMAKE_SOURCE_DIR}/lib/stb_image"
+  # GLAD
+  "${CMAKE_SOURCE_DIR}/lib/glad/include"
+)
+
 # Project Setup
 set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
-        ${GLAD_SRC}
 	${PROJECT_SOURCE_DIR}/*.c
 	${PROJECT_SOURCE_DIR}/*.cpp)
 
-# Include directories
-include_directories(${PROJECT_INCLUDE_DIR})
+add_executable(${PROJECT_NAME} 
+        ${DEPS}
+        ${SOURCE_FILES})
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE
-  "${glm_SOURCE_DIR}"
-  "${OPENGL_INCLUDE_DIR}"
-  # STBIMAGE
-  "${CMAKE_SOURCE_DIR}/lib/stb_image"
-  # GLAD
-  "${CMAKE_SOURCE_DIR}/lib/glad/include"
+  ${DEPS_INCLUDE_DIR}
+  ${PROJECT_INCLUDE_DIR}
   ${PROJECT_SOURCE_DIR}
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw)

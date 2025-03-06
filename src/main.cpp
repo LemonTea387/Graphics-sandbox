@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "programs/triangle.hpp"
-#include "selector_app.hpp"
+#include "playground_app.hpp"
 
 int main(int argc, char** argv) {
   ApplicationSpec spec{

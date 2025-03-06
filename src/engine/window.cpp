@@ -1,7 +1,6 @@
 #include "engine/window.hpp"
 #include <iostream>
 #include <memory>
-#include "GLFW/glfw3.h"
 #include "engine/error.hpp"
 
 void framebufSizeCallback(GLFWwindow* window, int width, int height) {
@@ -26,10 +25,7 @@ std::expected<std::unique_ptr<Window>, EngineError> Window::create(
   return rw;
 }
 
-void Window::update() {
-  glfwSwapBuffers(m_Window);
-  glfwPollEvents();
-}
+void Window::update() { glfwSwapBuffers(m_Window); }
 
 void* Window::getNativeWindow() { return m_Window; }
 

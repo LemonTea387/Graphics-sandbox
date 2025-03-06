@@ -1,7 +1,4 @@
 #include "programs/triangle.hpp"
-#include <glad/gl.h>
-#include <GL/gl.h>
-#include "engine/renderer/shader.hpp"
 
 void TriangleProgram::setup() {
   float vertices[] = {
@@ -14,8 +11,7 @@ void TriangleProgram::setup() {
 
   glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
 
   auto shader = Shader::create("triangle", "./shaders/triangle.vert.glsl",
                                "./shaders/triangle.frag.glsl");
@@ -32,13 +28,23 @@ void TriangleProgram::loop() {
   // Use program
   m_Shader->bind();
   glBindVertexArray(m_Vao);
+  glEnableVertexAttribArray(0);
   glDrawArrays(GL_TRIANGLES, 0, 3);
+
+  m_Shader->unbind();
+  glBindVertexArray(0);
+  glDisableVertexAttribArray(0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void TriangleProgram::cleanup() {
   glDeleteBuffers(1, &m_Vbo);
   m_Shader.reset();
   m_Active = false;
+}
+
+const std::string &TriangleProgram::getDescription() const {
+  return m_Description;
 }
 
 TriangleProgram::TriangleProgram() : Program("Triangle") {}

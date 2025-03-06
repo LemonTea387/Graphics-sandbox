@@ -1,9 +1,13 @@
-#include "selector_app.hpp"
+#include "playground_app.hpp"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <format>
 #include <iostream>
 #include <memory>
+
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 constexpr uint8_t OPENGL_VERSION{41};
 
@@ -42,12 +46,38 @@ PlaygroundApp::create(const ApplicationSpec& spec) {
     return std::unexpected(EngineError::GLAD_ERROR);
   }
 
+  // TODO: maybe move somewhere?
+  // imgui
+  // State
+  app->m_State = {};
+  // Setup Dear ImGui context
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO();
+  io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+  io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+  // Setup Platform/Renderer backends
+  ImGui_ImplGlfw_InitForOpenGL(
+      (GLFWwindow*)app->m_Window->getNativeWindow(),
+      true);  // Second param install_callback=true will install
+              // GLFW callbacks and chain to existing ones.
+  ImGui_ImplOpenGL3_Init();
+
   return std::move(app);
 }
 
 PlaygroundApp::PlaygroundApp() : Application() {}
 
-PlaygroundApp::~PlaygroundApp() { glfwTerminate(); }
+PlaygroundApp::~PlaygroundApp() {
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+  glfwTerminate();
+}
 
 Window& PlaygroundApp::getWindow() { return *m_Window; }
 
@@ -63,7 +93,26 @@ void PlaygroundApp::run() {
 
   // Loop
   while (!glfwWindowShouldClose(window)) {
+    glfwPollEvents();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    showProgramSelector();
+    // Handle some state after imgui
+    // TODO: Make it event based
+    if (m_State.Run && m_State.SelectedProgram != nullptr) {
+      // Yes this is kinda dumb
+      runProgram(m_State.SelectedProgram->getName());
+      m_State.Run = false;
+    }
+
     m_ActiveProgram->loop();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     m_Window->update();
   }
 }
@@ -86,4 +135,58 @@ void PlaygroundApp::runProgram(const std::string& name) {
 
 void PlaygroundApp::registerProgram(std::unique_ptr<Program> program) {
   m_Programs.try_emplace(program->getName(), std::move(program));
+}
+
+void PlaygroundApp::showProgramSelector() {
+  ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+  if (ImGui::Begin("Pick your poison.", nullptr, ImGuiWindowFlags_MenuBar)) {
+    // Programs
+    {
+      ImGui::BeginChild("Programs", ImVec2(150, 0),
+                        ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeX);
+
+      // Some c++17 arcane shit that I just discovered.
+      for (auto&& [name, program] : m_Programs) {
+        if (ImGui::Selectable(name.c_str(),
+                              m_State.SelectedProgram == program.get())) {
+          m_State.SelectedProgram = program.get();
+        }
+      }
+      ImGui::EndChild();
+    }
+    ImGui::SameLine();
+
+    // Description
+    {
+      ImGui::BeginGroup();
+      ImGui::BeginChild(
+          "Details",
+          ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));  // Leave room for 1
+                                                            // line below us
+      if (m_State.SelectedProgram != nullptr) {
+        ImGui::Text("%s", m_State.SelectedProgram->getName().c_str());
+      } else {
+        ImGui::Text("Select a Program!");
+      }
+      ImGui::Separator();
+      if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+        if (ImGui::BeginTabItem("Description")) {
+          if (m_State.SelectedProgram != nullptr) {
+            ImGui::TextWrapped(
+                "%s", m_State.SelectedProgram->getDescription().c_str());
+          } else {
+            ImGui::Text("Select a Program!");
+          }
+          ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+      }
+      ImGui::EndChild();
+      if (ImGui::Button("Load")) {
+        m_State.Run = true;
+      }
+      ImGui::EndGroup();
+    }
+  }
+  ImGui::End();
 }

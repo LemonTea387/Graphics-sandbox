@@ -14,7 +14,8 @@ class Program {
   virtual void setup() = 0;
   virtual void loop() = 0;
   virtual void cleanup() = 0;
-  const std::string &getName() { return m_Name; };
+  virtual const std::string &getDescription() const = 0;
+  const std::string &getName() const { return m_Name; };
 
  private:
   std::string m_Name;
