@@ -1,7 +1,7 @@
 #include "engine/window.hpp"
 #include <iostream>
 #include <memory>
-#include "engine/error.hpp"
+#include "engine/engine_error.hpp"
 
 namespace {
 void framebufSizeCallback(GLFWwindow* window, int width, int height) {
@@ -9,8 +9,7 @@ void framebufSizeCallback(GLFWwindow* window, int width, int height) {
 }
 }  // namespace
 
-std::expected<std::unique_ptr<Window>, EngineError> Window::create(
-    const WindowSpec& spec) {
+RefRes<Window> Window::create(const WindowSpec& spec) {
   bool res;
   auto rw = std::unique_ptr<Window>(new Window());
 

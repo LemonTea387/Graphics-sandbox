@@ -3,10 +3,9 @@
 
 #include <cstdint>
 #include <expected>
-#include <memory>
 #include <string>
 #include <glm/glm.hpp>
-#include "engine/error.hpp"
+#include "engine/types.hpp"
 
 class Shader {
  public:
@@ -33,14 +32,13 @@ class Shader {
 
   const std::string &getName() const;
 
-  static std::expected<std::unique_ptr<Shader>, EngineError> create(
-      const std::string &name, const std::string &vertex_path,
-      const std::string &fragment_path);
+  static RefRes<Shader> create(const std::string &name,
+                               const std::string &vertex_path,
+                               const std::string &fragment_path);
 
  private:
   Shader();
-  static std::expected<std::string, EngineError> readFile(
-      const std::string &filepath);
+  static Res<std::string> readFile(const std::string &filepath);
   std::string m_Name;
   std::uint32_t m_Program;
 };

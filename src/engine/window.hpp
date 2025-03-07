@@ -1,12 +1,11 @@
 #ifndef ENGINE_WINDOW_H
 #define ENGINE_WINDOW_H
 
-#include <memory>
 #include <expected>
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
-#include "engine/error.hpp"
+#include "engine/types.hpp"
 
 struct WindowSpec {
   std::string Title;
@@ -19,8 +18,7 @@ class Window {
   /*
    * Constructors/Operators
    */
-  static std::expected<std::unique_ptr<Window>, EngineError> create(
-      const WindowSpec &);
+  static RefRes<Window> create(const WindowSpec &);
   ~Window();
   Window(const Window &other) = delete;
   Window &operator=(const Window &other) = delete;
