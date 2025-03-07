@@ -139,7 +139,10 @@ void PlaygroundApp::registerProgram(std::unique_ptr<Program> program) {
 
 void PlaygroundApp::showProgramSelector() {
   ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
-  if (ImGui::Begin("Pick your poison.", nullptr, ImGuiWindowFlags_MenuBar)) {
+  if (ImGui::Begin("Pick your poison.", nullptr, ImGuiWindowFlags_None)) {
+    ImGui::Text("Currently Active : %s",
+                m_ActiveProgram != nullptr ? m_ActiveProgram->getName().c_str()
+                                           : "None");
     // Programs
     {
       ImGui::BeginChild("Programs", ImVec2(150, 0),
