@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 
-#include "engine/window.hpp"
+class Window;
 
 struct ApplicationSpec {
   std::string Title;

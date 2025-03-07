@@ -1,4 +1,5 @@
 #include "programs/triangle.hpp"
+#include "engine/renderer/shader.hpp"
 
 void TriangleProgram::setup() {
   float vertices[] = {

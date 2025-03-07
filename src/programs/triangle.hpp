@@ -3,8 +3,11 @@
 
 #include <glad/gl.h>
 #include <GL/gl.h>
-#include "engine/renderer/shader.hpp"
+#include <memory>
 #include "programs/program.hpp"
+
+class Shader;
+
 class TriangleProgram : public Program {
  public:
   TriangleProgram();

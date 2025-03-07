@@ -4,7 +4,6 @@
 #include <format>
 #include <fstream>
 #include <iostream>
-#include "engine/error.hpp"
 
 void Shader::bind() const { glUseProgram(m_Program); }
 void Shader::unbind() const { glUseProgram(0); }

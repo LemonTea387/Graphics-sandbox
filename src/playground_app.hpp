@@ -1,10 +1,16 @@
 #ifndef APP_H
 #define APP_H
 
+#include <expected>
 #include <unordered_map>
+#include <memory>
+
 #include "engine/application.hpp"
-#include "engine/window.hpp"
-#include "programs/program.hpp"
+
+class Program;
+class Window;
+enum class EngineError;
+
 /**
  * Mainly used for bridge of IMGUI with main app.
  * TODO: Will change to events system to drive the program when that's up T_T

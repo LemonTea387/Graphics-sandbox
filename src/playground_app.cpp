@@ -4,7 +4,8 @@
 #include <cstdint>
 #include <format>
 #include <iostream>
-#include <memory>
+#include "engine/window.hpp"
+#include "programs/program.hpp"
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
