@@ -1,6 +1,7 @@
 #include "playground_app.hpp"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <cstdint>
 #include <format>
 #include <iostream>
 #include <memory>
@@ -9,7 +10,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-constexpr uint8_t OPENGL_VERSION{41};
+constexpr std::uint8_t OPENGL_VERSION{41};
 
 std::expected<std::unique_ptr<PlaygroundApp>, EngineError>
 PlaygroundApp::create(const ApplicationSpec& spec) {

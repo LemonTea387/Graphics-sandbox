@@ -24,7 +24,7 @@ class Shader {
 
   void setBool(const std::string &name, bool value);
   void setInt(const std::string &name, int value);
-  void setIntArray(const std::string &name, int *values, uint32_t count);
+  void setIntArray(const std::string &name, int *values, std::uint32_t count);
   void setFloat(const std::string &name, float value);
   void setFloat2(const std::string &name, const glm::vec2 &value);
   void setFloat3(const std::string &name, const glm::vec3 &value);
@@ -42,7 +42,7 @@ class Shader {
   static std::expected<std::string, EngineError> readFile(
       const std::string &filepath);
   std::string m_Name;
-  uint32_t m_Program;
+  std::uint32_t m_Program;
 };
 
 #endif

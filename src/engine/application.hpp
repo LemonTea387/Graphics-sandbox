@@ -8,8 +8,8 @@
 
 struct ApplicationSpec {
   std::string Title;
-  uint32_t Width;
-  uint32_t Height;
+  std::uint32_t Width;
+  std::uint32_t Height;
 };
 
 class Application {
