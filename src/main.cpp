@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include "programs/triangle.hpp"
@@ -9,7 +10,7 @@ int main(int argc, char** argv) {
   auto res = PlaygroundApp::create(spec);
   if (!res.has_value()) {
     std::cerr << "App creation error" << std::endl;
-    std::exit(1);
+    std::exit(EXIT_FAILURE);
   }
 
   auto app = std::move(*res);
@@ -18,5 +19,5 @@ int main(int argc, char** argv) {
   app->runProgram("Triangle");
   app->run();
 
-  std::exit(0);
+  std::exit(EXIT_SUCCESS);
 }
