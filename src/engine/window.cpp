@@ -3,9 +3,11 @@
 #include <memory>
 #include "engine/error.hpp"
 
+namespace {
 void framebufSizeCallback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
 }
+}  // namespace
 
 std::expected<std::unique_ptr<Window>, EngineError> Window::create(
     const WindowSpec& spec) {
