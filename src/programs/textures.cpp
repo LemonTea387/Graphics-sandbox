@@ -10,6 +10,8 @@
 namespace {
 Res<GLuint, Error> loadTexture(const std::string &file, GLint mode) {
   std::int32_t width, height, nrChannels;
+  // Images are flipped since opengl expects y0.0 to be bottom.
+  stbi_set_flip_vertically_on_load(true);
   std::uint8_t *data = stbi_load(file.c_str(), &width, &height, &nrChannels, 0);
   if (data == nullptr) {
     std::cerr << std::format("Failed to load image %s", file) << std::endl;
