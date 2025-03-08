@@ -17,8 +17,10 @@ class Program {
   virtual Res<void, Error> setup() = 0;
   virtual void loop() = 0;
   virtual void cleanup() = 0;
-  const std::string &getDescription() const { return m_Description; };
-  const std::string &getName() const { return m_Name; };
+  [[nodiscard]] const std::string &getDescription() const {
+    return m_Description;
+  };
+  [[nodiscard]] const std::string &getName() const { return m_Name; };
 
  private:
   std::string m_Name;
