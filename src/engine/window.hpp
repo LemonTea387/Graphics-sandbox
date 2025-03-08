@@ -35,7 +35,7 @@ class Window {
   void *getNativeWindow();
 
  private:
-  GLFWwindow *m_Window;
+  GLFWwindow *m_Window{nullptr};
   Window();
 };
 #endif
