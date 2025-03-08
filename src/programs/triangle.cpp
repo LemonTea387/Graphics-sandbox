@@ -43,6 +43,7 @@ void TriangleProgram::loop() {
 
 void TriangleProgram::cleanup() {
   glDeleteBuffers(1, &m_Vbo);
+  glDeleteVertexArrays(1, &m_Vao);
   m_Shader.reset();
   m_Active = false;
 }
