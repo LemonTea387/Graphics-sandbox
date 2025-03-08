@@ -1,28 +1,15 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
+
+# Set C++ version
+set(CMAKE_CXX_STANDARD 23)
 
 project(
-  OpenGLSandbox
+  GraphicsSandbox
   VERSION 0.0.1
-  DESCRIPTION "A place where I keep track of things to play around with opengl."
-  LANGUAGES CXX
+  DESCRIPTION "A place where I keep track of things to play around with graphics."
+  LANGUAGES CXX C
+
 )
-
-set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
-
-set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
-
-# Add source files
-file(GLOB_RECURSE SOURCE_FILES 
-	${PROJECT_SOURCE_DIR}/*.c
-	${PROJECT_SOURCE_DIR}/*.cpp)
-	
-# Add header files
-file(GLOB_RECURSE HEADER_FILES 
-	${PROJECT_SOURCE_DIR}/*.h
-	${PROJECT_SOURCE_DIR}/*.hpp)
-
-# Include directories
-include_directories(${PROJECT_INCLUDE_DIR})
 
 find_package(OpenGL REQUIRED)
 
@@ -33,35 +20,71 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/glfw/glfw
         GIT_TAG aa80d24d01d150e26d664ff2d5da22e95db6bb82 # Release 3.3.8
 )
-# GLAD
-FetchContent_Declare(
-        glad
-        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
-)
 
 FetchContent_Declare(
         glm
         GIT_REPOSITORY https://github.com/g-truc/glm.git
         GIT_PROGRESS TRUE
 )
-FetchContent_GetProperties(glfw)
-if(NOT glfw_POPULATED)
-    FetchContent_Populate(glfw)
+FetchContent_Declare(
+        glad
+        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+        GIT_TAG        v2.0.6
+        SOURCE_SUBDIR  cmake
+)
+FetchContent_Declare(
+        stb
+	GIT_REPOSITORY https://github.com/nothings/stb.git
+	GIT_TAG master
+)
 
-    set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
-    set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
-    set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
-    set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
+# GLFW
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs")
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs")
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
 
-    add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
-endif()
+FetchContent_MakeAvailable(glfw glm glad stb)
 
-FetchContent_MakeAvailable(glad glm)
+# stb_image
+add_library(stb_image INTERFACE ${stb_SOURCE_DIR}/stb_image.h)
+target_include_directories(stb_image INTERFACE ${stb_SOURCE_DIR})
 
-add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+# GLAD
+glad_add_library(glad_gl_core_41 STATIC REPRODUCIBLE LANGUAGE C API gl:core=4.1 EXTENSIONS NONE)
+
+## TODO: Make IMGUI avail by fetchcontent
+# IMGUI
+file(GLOB IMGUI_SRC 
+        ${CMAKE_SOURCE_DIR}/lib/imgui/*.cpp
+        ${CMAKE_SOURCE_DIR}/lib/imgui/misc/cpp/imgui_stdlib.*
+        ${CMAKE_SOURCE_DIR}/lib/imgui/backends/imgui_impl_opengl3.cpp
+        ${CMAKE_SOURCE_DIR}/lib/imgui/backends/imgui_impl_glfw.cpp
+)
+
+# External Dependencies
+set(DEPS ${IMGUI_SRC})
+set(DEPS_INCLUDE_DIR 
+  "${CMAKE_SOURCE_DIR}/lib/imgui/"
+)
+
+# Project Setup
+set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
+set(PROJECT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
+
+# Add source files
+file(GLOB_RECURSE SOURCE_FILES 
+	${PROJECT_SOURCE_DIR}/*.c
+	${PROJECT_SOURCE_DIR}/*.cpp)
+
+add_executable(${PROJECT_NAME} 
+        ${DEPS}
+        ${SOURCE_FILES})
+# Maybe we want to do this in a cmake preset.
+target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wextra -pedantic)
 target_include_directories(${PROJECT_NAME} PRIVATE
-  "${glm_SOURCE_DIR}"
-  "${OPENGL_INCLUDE_DIR}"
-  "${CMAKE_SOURCE_DIR}/include"
-  "${CMAKE_SOURCE_DIR}/external/stb_image")
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad)
+  ${DEPS_INCLUDE_DIR}
+  ${PROJECT_INCLUDE_DIR}
+  ${PROJECT_SOURCE_DIR}
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glm::glm glad_gl_core_41 stb_image)
