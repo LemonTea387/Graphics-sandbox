@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "programs/triangle.hpp"
+#include "programs/textures.hpp"
 #include "playground_app.hpp"
 
 int main() {
@@ -16,6 +17,7 @@ int main() {
   auto app = std::move(*res);
 
   app->registerProgram(std::make_unique<TriangleProgram>());
+  app->registerProgram(std::make_unique<TexturesProgram>());
   app->runProgram("Triangle");
   app->run();
 
