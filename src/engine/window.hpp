@@ -10,9 +10,9 @@
 #include "engine/types.hpp"
 
 struct WindowSpec {
-  std::string Title;
-  std::uint32_t Width;
-  std::uint32_t Height;
+  std::string Title{};
+  std::uint32_t Width{};
+  std::uint32_t Height{};
 };
 
 class Window {

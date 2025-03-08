@@ -16,10 +16,10 @@ enum class EngineError;
  * TODO: Will change to events system to drive the program when that's up T_T
  */
 struct ProgramState {
-  Program *SelectedProgram;
+  Program *SelectedProgram{nullptr};
   /// A flag to trigger reloading of program based on currently selected
   /// program.
-  bool Run = false;
+  bool Run{false};
 };
 
 class PlaygroundApp : public Application {
