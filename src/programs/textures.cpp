@@ -3,21 +3,23 @@
 #include <iostream>
 
 #include "engine/renderer/shader.hpp"
+#include "error.hpp"
 #include "programs/triangle.hpp"
 #include "stb_image.h"
 
-Res<void, Error> TexturesProgram::setup() {
+namespace {
+Res<GLuint, Error> loadTexture(const std::string &file, GLint mode) {
   std::int32_t width, height, nrChannels;
-  std::uint8_t *data =
-      stbi_load("assets/container.jpg", &width, &height, &nrChannels, 0);
+  std::uint8_t *data = stbi_load(file.c_str(), &width, &height, &nrChannels, 0);
   if (data == nullptr) {
-    std::cerr << "Failed to load image" << std::endl;
+    std::cerr << std::format("Failed to load image %s", file) << std::endl;
     return std::unexpected(Error::IO_ERROR);
   }
-
-  glGenTextures(1, &m_Texture);
-  glBindTexture(GL_TEXTURE_2D, m_Texture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+  GLuint texture;
+  glGenTextures(1, &texture);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, mode,
                GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);
   // set the texture wrapping/filtering options (on the currently bound texture
@@ -27,8 +29,26 @@ Res<void, Error> TexturesProgram::setup() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                   GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  glBindTexture(GL_TEXTURE_2D, texture);
   // Free image
   stbi_image_free(data);
+
+  return texture;
+}
+};  // namespace
+
+Res<void, Error> TexturesProgram::setup() {
+  auto res = loadTexture("assets/container.jpg", GL_RGB);
+  if (!res.has_value()) {
+    return std::unexpected(res.error());
+  }
+  m_TextureContainer = *res;
+  res = loadTexture("assets/awesomeface.png", GL_RGBA);
+  if (!res.has_value()) {
+    return std::unexpected(res.error());
+  }
+  m_TextureFace = *res;
 
   // Draw manually
   float vertices[]{
@@ -85,8 +105,13 @@ void TexturesProgram::loop() {
   glClear(GL_COLOR_BUFFER_BIT);
 
   m_Shader->bind();
-
-  glBindTexture(GL_TEXTURE_2D, m_Texture);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, m_TextureContainer);
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, m_TextureFace);
+  // Set which texture unit belongs to which uniform
+  m_Shader->setInt("uniform_texture1", 0);
+  m_Shader->setInt("uniform_texture2", 1);
 
   glBindVertexArray(m_Vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -94,6 +119,10 @@ void TexturesProgram::loop() {
   m_Shader->unbind();
   glBindVertexArray(0);
   glDisableVertexAttribArray(0);
+
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -101,7 +130,8 @@ void TexturesProgram::cleanup() {
   glDeleteBuffers(1, &m_Vbo);
   glDeleteBuffers(1, &m_Ebo);
   glDeleteVertexArrays(1, &m_Vao);
-  glDeleteTextures(1, &m_Texture);
+  glDeleteTextures(1, &m_TextureContainer);
+  glDeleteTextures(1, &m_TextureFace);
   m_Shader.reset();
   m_Active = false;
 }

@@ -24,7 +24,8 @@ class TexturesProgram : public Program {
   GLuint m_Vao;
   GLuint m_Vbo;
   GLuint m_Ebo;
-  GLuint m_Texture;
+  GLuint m_TextureContainer;
+  GLuint m_TextureFace;
 };
 
 #endif
