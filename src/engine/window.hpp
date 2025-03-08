@@ -1,6 +1,7 @@
 #ifndef ENGINE_WINDOW_H
 #define ENGINE_WINDOW_H
 
+#include <cstdint>
 #include <expected>
 
 #include <glad/gl.h>
@@ -10,8 +11,8 @@
 
 struct WindowSpec {
   std::string Title;
-  uint32_t Width;
-  uint32_t Height;
+  std::uint32_t Width;
+  std::uint32_t Height;
 };
 
 class Window {
