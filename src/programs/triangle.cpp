@@ -1,7 +1,7 @@
 #include "programs/triangle.hpp"
 #include "engine/renderer/shader.hpp"
 
-void TriangleProgram::setup() {
+Res<void, Error> TriangleProgram::setup() {
   float vertices[] = {
       -0.4f, -0.4f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.8f, 0.0f,
   };
@@ -17,10 +17,13 @@ void TriangleProgram::setup() {
   auto shader = Shader::create("triangle", "./shaders/triangle.vert.glsl",
                                "./shaders/triangle.frag.glsl");
   if (!shader.has_value()) {
-    return;
+    return std::unexpected(Error::PROGRAM_ERROR);
   }
   m_Shader = std::move(*shader);
   m_Active = true;
+
+  // What is this
+  return Res<void, Error>{};
 }
 
 void TriangleProgram::loop() {

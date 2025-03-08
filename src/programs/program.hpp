@@ -2,6 +2,8 @@
 #define PROGRAM_H
 
 #include <string>
+#include "engine/types.hpp"
+#include "error.hpp"
 class Program {
  public:
   virtual ~Program() = 0;
@@ -12,7 +14,7 @@ class Program {
   Program &operator=(const Program &other) = delete;
   Program &operator=(const Program &&other) = delete;
 
-  virtual void setup() = 0;
+  virtual Res<void, Error> setup() = 0;
   virtual void loop() = 0;
   virtual void cleanup() = 0;
   const std::string &getDescription() const { return m_Description; };

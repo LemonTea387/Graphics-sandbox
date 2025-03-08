@@ -12,7 +12,7 @@ class TriangleProgram : public Program {
  public:
   TriangleProgram();
   ~TriangleProgram() override;
-  void setup() override;
+  Res<void, Error> setup() override;
   void loop() override;
   void cleanup() override;
 
