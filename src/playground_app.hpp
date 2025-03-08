@@ -42,7 +42,7 @@ class PlaygroundApp : public Application {
   PlaygroundApp();
   Program *m_ActiveProgram{nullptr};
   std::unordered_map<std::string, Ref<Program>> m_Programs{};
-  Ref<Window> m_Window{nullptr};
+  Ref<Window> m_Window;
 
   // TODO: Maybe should move it out?
   ProgramState m_State{};
