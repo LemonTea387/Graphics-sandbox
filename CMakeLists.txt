@@ -26,16 +26,21 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/g-truc/glm.git
         GIT_PROGRESS TRUE
 )
+FetchContent_Declare(
+        glad
+        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+        GIT_TAG        v2.0.6
+        SOURCE_SUBDIR  cmake
+)
 
 # GLFW
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs")
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
 
-FetchContent_MakeAvailable(glfw glm)
-
+FetchContent_MakeAvailable(glfw glm glad)
 # GLAD
-file(GLOB GLAD_SRC ${CMAKE_SOURCE_DIR}/lib/glad/src/gl.c)
+glad_add_library(glad_gl_core_41 STATIC REPRODUCIBLE LANGUAGE C API gl:core=4.1 EXTENSIONS NONE)
 
 # IMGUI
 file(GLOB IMGUI_SRC 
@@ -53,8 +58,6 @@ set(DEPS_INCLUDE_DIR
   ${OPENGL_INCLUDE_DIR}
   # STBIMAGE
   "${CMAKE_SOURCE_DIR}/lib/stb_image"
-  # GLAD
-  "${CMAKE_SOURCE_DIR}/lib/glad/include"
 )
 
 # Project Setup
@@ -76,4 +79,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${PROJECT_INCLUDE_DIR}
   ${PROJECT_SOURCE_DIR}
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad_gl_core_41)
