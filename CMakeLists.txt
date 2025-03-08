@@ -4,9 +4,9 @@ cmake_minimum_required(VERSION 3.20)
 set(CMAKE_CXX_STANDARD 23)
 
 project(
-  OpenGLSandbox
+  GraphicsSandbox
   VERSION 0.0.1
-  DESCRIPTION "A place where I keep track of things to play around with opengl."
+  DESCRIPTION "A place where I keep track of things to play around with graphics."
   LANGUAGES CXX C
 
 )
@@ -32,13 +32,23 @@ FetchContent_Declare(
         GIT_TAG        v2.0.6
         SOURCE_SUBDIR  cmake
 )
+FetchContent_Declare(
+        stb
+	GIT_REPOSITORY https://github.com/nothings/stb.git
+	GIT_TAG master
+)
 
 # GLFW
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs")
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation")
 
-FetchContent_MakeAvailable(glfw glm glad)
+FetchContent_MakeAvailable(glfw glm glad stb)
+
+# stb_image
+add_library(stb_image INTERFACE ${stb_SOURCE_DIR}/stb_image.h)
+target_include_directories(stb_image INTERFACE ${stb_SOURCE_DIR})
+
 # GLAD
 glad_add_library(glad_gl_core_41 STATIC REPRODUCIBLE LANGUAGE C API gl:core=4.1 EXTENSIONS NONE)
 
@@ -51,13 +61,9 @@ file(GLOB IMGUI_SRC
 )
 
 # External Dependencies
-set(DEPS ${GLAD_SRC} ${IMGUI_SRC})
+set(DEPS ${IMGUI_SRC})
 set(DEPS_INCLUDE_DIR 
   "${CMAKE_SOURCE_DIR}/lib/imgui/"
-  ${glm_SOURCE_DIR}
-  ${OPENGL_INCLUDE_DIR}
-  # STBIMAGE
-  "${CMAKE_SOURCE_DIR}/lib/stb_image"
 )
 
 # Project Setup
@@ -79,4 +85,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${PROJECT_INCLUDE_DIR}
   ${PROJECT_SOURCE_DIR}
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad_gl_core_41)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glm::glm glad_gl_core_41 stb_image)
