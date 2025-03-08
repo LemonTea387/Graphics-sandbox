@@ -7,29 +7,29 @@
 
 void Shader::bind() const { glUseProgram(m_Program); }
 void Shader::unbind() const { glUseProgram(0); }
-void Shader::setBool(const std::string &name, bool value) {
+void Shader::setBool(const std::string &name, bool value) const {
   glUniform1i(glGetUniformLocation(m_Program, name.c_str()), (int)value);
 }
-void Shader::setInt(const std::string &name, int value) {
+void Shader::setInt(const std::string &name, int value) const {
   glUniform1i(glGetUniformLocation(m_Program, name.c_str()), value);
 }
 void Shader::setIntArray(const std::string &name, int *values,
-                         std::uint32_t count) {}
-void Shader::setFloat(const std::string &name, float value) {
+                         std::uint32_t count) const {}
+void Shader::setFloat(const std::string &name, float value) const {
   glUniform1f(glGetUniformLocation(m_Program, name.c_str()), value);
 }
-void Shader::setFloat2(const std::string &name, const glm::vec2 &value) {
+void Shader::setFloat2(const std::string &name, const glm::vec2 &value) const {
   glUniform2f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y);
 }
-void Shader::setFloat3(const std::string &name, const glm::vec3 &value) {
+void Shader::setFloat3(const std::string &name, const glm::vec3 &value) const {
   glUniform3f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y,
               value.z);
 }
-void Shader::setFloat4(const std::string &name, const glm::vec4 &value) {
+void Shader::setFloat4(const std::string &name, const glm::vec4 &value) const {
   glUniform4f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y,
               value.z, value.a);
 }
-void Shader::setMat4(const std::string &name, const glm::mat4 &value) {}
+void Shader::setMat4(const std::string &name, const glm::mat4 &value) const {}
 
 RefRes<Shader, EngineError> Shader::create(const std::string &name,
                                            const std::string &vertex_path,

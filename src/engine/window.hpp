@@ -19,7 +19,7 @@ class Window {
   /*
    * Constructors/Operators
    */
-  static RefRes<Window, EngineError> create(const WindowSpec &);
+  [[nodiscard]] static RefRes<Window, EngineError> create(const WindowSpec &);
   ~Window();
   Window(const Window &other) = delete;
   Window &operator=(const Window &other) = delete;
