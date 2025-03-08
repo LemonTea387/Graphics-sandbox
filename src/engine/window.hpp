@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <expected>
+#include <string>
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
