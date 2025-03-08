@@ -40,12 +40,12 @@ class PlaygroundApp : public Application {
 
  private:
   PlaygroundApp();
-  Program *m_ActiveProgram;
-  std::unordered_map<std::string, Ref<Program>> m_Programs;
-  Ref<Window> m_Window;
+  Program *m_ActiveProgram{nullptr};
+  std::unordered_map<std::string, Ref<Program>> m_Programs{};
+  Ref<Window> m_Window{nullptr};
 
   // TODO: Maybe should move it out?
-  ProgramState m_State;
+  ProgramState m_State{};
   void showProgramSelector();
 };
 
