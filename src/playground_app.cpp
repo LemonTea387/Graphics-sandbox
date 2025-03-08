@@ -85,16 +85,13 @@ PlaygroundApp::~PlaygroundApp() {
 Window& PlaygroundApp::getWindow() { return *m_Window; }
 
 void PlaygroundApp::run() {
-  auto window = (GLFWwindow*)m_Window->getNativeWindow();
-
   if (m_ActiveProgram == nullptr) {
     std::cerr << "No active program configured!" << std::endl;
     return;
   }
 
-  m_ActiveProgram->setup();
-
   // Loop
+  auto window = (GLFWwindow*)m_Window->getNativeWindow();
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
