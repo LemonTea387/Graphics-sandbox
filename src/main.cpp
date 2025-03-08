@@ -4,7 +4,7 @@
 #include "programs/triangle.hpp"
 #include "playground_app.hpp"
 
-int main(int argc, char** argv) {
+int main() {
   ApplicationSpec spec{
       .Title = std::string("Playground!"), .Width = 800, .Height = 600};
   auto res = PlaygroundApp::create(spec);

@@ -69,7 +69,8 @@ file(GLOB_RECURSE SOURCE_FILES
 add_executable(${PROJECT_NAME} 
         ${DEPS}
         ${SOURCE_FILES})
-
+# Maybe we want to do this in a cmake preset.
+target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wextra -pedantic)
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${DEPS_INCLUDE_DIR}
   ${PROJECT_INCLUDE_DIR}

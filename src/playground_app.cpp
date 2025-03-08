@@ -5,6 +5,7 @@
 #include <format>
 #include <iostream>
 #include "engine/window.hpp"
+#include "engine/engine_error.hpp"
 #include "programs/program.hpp"
 
 #include <imgui.h>
@@ -13,9 +14,9 @@
 
 constexpr std::uint8_t OPENGL_VERSION{41};
 
-std::expected<std::unique_ptr<PlaygroundApp>, EngineError>
-PlaygroundApp::create(const ApplicationSpec& spec) {
-  auto app = std::unique_ptr<PlaygroundApp>(new PlaygroundApp());
+RefRes<PlaygroundApp, EngineError> PlaygroundApp::create(
+    const ApplicationSpec& spec) {
+  auto app = Ref<PlaygroundApp>(new PlaygroundApp());
 
   // Create Window
   int res;
@@ -69,7 +70,7 @@ PlaygroundApp::create(const ApplicationSpec& spec) {
               // GLFW callbacks and chain to existing ones.
   ImGui_ImplOpenGL3_Init();
 
-  return std::move(app);
+  return app;
 }
 
 PlaygroundApp::PlaygroundApp() : Application() {}

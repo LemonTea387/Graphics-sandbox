@@ -3,13 +3,13 @@
 #include <memory>
 
 namespace {
-void framebufSizeCallback(GLFWwindow* window, int width, int height) {
+void framebufSizeCallback([[maybe_unused]] GLFWwindow* window, int width,
+                          int height) {
   glViewport(0, 0, width, height);
 }
 }  // namespace
 
 RefRes<Window, EngineError> Window::create(const WindowSpec& spec) {
-  bool res;
   auto rw = std::unique_ptr<Window>(new Window());
 
   GLFWwindow* window =

@@ -1,6 +1,7 @@
 #include "engine/renderer/shader.hpp"
 #include <glad/gl.h>
 #include <GL/gl.h>
+#include <glm/ext.hpp>
 #include <format>
 #include <fstream>
 #include <iostream>
@@ -14,7 +15,9 @@ void Shader::setInt(const std::string &name, int value) const {
   glUniform1i(glGetUniformLocation(m_Program, name.c_str()), value);
 }
 void Shader::setIntArray(const std::string &name, int *values,
-                         std::uint32_t count) const {}
+                         std::uint32_t count) const {
+  glUniform1iv(glGetUniformLocation(m_Program, name.c_str()), count, values);
+}
 void Shader::setFloat(const std::string &name, float value) const {
   glUniform1f(glGetUniformLocation(m_Program, name.c_str()), value);
 }
@@ -29,12 +32,17 @@ void Shader::setFloat4(const std::string &name, const glm::vec4 &value) const {
   glUniform4f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y,
               value.z, value.a);
 }
-void Shader::setMat4(const std::string &name, const glm::mat4 &value) const {}
+void Shader::setMat4(const std::string &name, const glm::mat4 &value) const {
+  glUniformMatrix4fv(glGetUniformLocation(m_Program, name.c_str()), 1, GL_FALSE,
+                     glm::value_ptr(value));
+}
 
 RefRes<Shader, EngineError> Shader::create(const std::string &name,
                                            const std::string &vertex_path,
                                            const std::string &fragment_path) {
   auto shader = std::unique_ptr<Shader>(new Shader());
+  shader->m_Name = name;
+
   // Vertex
   GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
   auto read_res = readFile(vertex_path);
@@ -104,7 +112,7 @@ Res<std::string, EngineError> Shader::readFile(const std::string &filepath) {
   std::ifstream in(filepath, std::ios::binary);
   if (in) {
     in.seekg(0, std::ios::end);
-    size_t size = in.tellg();
+    std::ifstream::pos_type size = in.tellg();
     if (size != -1) {
       res.resize(size);
       in.seekg(0, std::ios::beg);
