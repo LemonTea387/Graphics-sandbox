@@ -15,4 +15,11 @@ It is a selector of 'scenes' that are different scenarios to play around with.
 ## Building
 ### Pre-requisites
 - `CMake >= v3.20`
-- `C++23 Compatible Compiler`
+- `C++23 Compatible Compiler toolchain`
+### Building & Compiling
+```
+cmake -B ./[build_dir]
+cmake --build ./[build_dir] --config [Release/Debug/RelWithDebInfo] -j [jobs]
+```
+You can also change the generator to Ninja to have parallel build without configuring I suppose.
+NOTE: Will provide a much better writeup for setting up soon, currently this will do.

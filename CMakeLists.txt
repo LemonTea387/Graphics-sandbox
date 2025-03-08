@@ -52,6 +52,7 @@ target_include_directories(stb_image INTERFACE ${stb_SOURCE_DIR})
 # GLAD
 glad_add_library(glad_gl_core_41 STATIC REPRODUCIBLE LANGUAGE C API gl:core=4.1 EXTENSIONS NONE)
 
+## TODO: Make IMGUI avail by fetchcontent
 # IMGUI
 file(GLOB IMGUI_SRC 
         ${CMAKE_SOURCE_DIR}/lib/imgui/*.cpp
