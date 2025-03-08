@@ -13,6 +13,10 @@
 #include <backends/imgui_impl_opengl3.h>
 
 constexpr std::uint8_t OPENGL_VERSION{41};
+namespace DebugMenu {
+constexpr ImVec2 WINDOW_SIZE{500, 440};
+constexpr ImVec2 LIST_SIZE{150, 0};
+};  // namespace DebugMenu
 
 RefRes<PlaygroundApp, EngineError> PlaygroundApp::create(
     const ApplicationSpec& spec) {
@@ -138,14 +142,14 @@ void PlaygroundApp::registerProgram(std::unique_ptr<Program> program) {
 }
 
 void PlaygroundApp::showProgramSelector() {
-  ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+  ImGui::SetNextWindowSize(DebugMenu::WINDOW_SIZE, ImGuiCond_FirstUseEver);
   if (ImGui::Begin("Pick your poison.", nullptr, ImGuiWindowFlags_None)) {
     ImGui::Text("Currently Active : %s",
                 m_ActiveProgram != nullptr ? m_ActiveProgram->getName().c_str()
                                            : "None");
     // Programs
     {
-      ImGui::BeginChild("Programs", ImVec2(150, 0),
+      ImGui::BeginChild("Programs", DebugMenu::LIST_SIZE,
                         ImGuiChildFlags_Borders | ImGuiChildFlags_ResizeX);
 
       // Some c++17 arcane shit that I just discovered.
