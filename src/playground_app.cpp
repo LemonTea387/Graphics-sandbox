@@ -120,8 +120,7 @@ void PlaygroundApp::run() {
 }
 
 void PlaygroundApp::runProgram(const std::string& name) {
-  // Why do we need 2 lookups.
-  if (m_Programs.find(name) == m_Programs.end()) {
+  if (auto program = m_Programs.find(name); program == m_Programs.end()) {
     std::cerr << std::format("No program {} found.", name);
     return;
   }
@@ -131,6 +130,7 @@ void PlaygroundApp::runProgram(const std::string& name) {
     m_ActiveProgram->cleanup();
   }
 
+  // TODO: Handle this error
   m_ActiveProgram = m_Programs.at(name).get();
   m_ActiveProgram->setup();
 }
