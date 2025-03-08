@@ -3,14 +3,14 @@
 
 #include <expected>
 #include <memory>
-#include "engine/engine_error.hpp"
+
 template <class T>
 using Ref = std::unique_ptr<T>;
 
-template <class T>
-using Res = std::expected<T, EngineError>;
+template <class T, class E>
+using Res = std::expected<T, E>;
 
-template <class T>
-using RefRes = std::expected<Ref<T>, EngineError>;
+template <class T, class E>
+using RefRes = std::expected<Ref<T>, E>;
 
 #endif

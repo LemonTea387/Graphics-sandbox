@@ -31,9 +31,9 @@ void Shader::setFloat4(const std::string &name, const glm::vec4 &value) {
 }
 void Shader::setMat4(const std::string &name, const glm::mat4 &value) {}
 
-RefRes<Shader> Shader::create(const std::string &name,
-                              const std::string &vertex_path,
-                              const std::string &fragment_path) {
+RefRes<Shader, EngineError> Shader::create(const std::string &name,
+                                           const std::string &vertex_path,
+                                           const std::string &fragment_path) {
   auto shader = std::unique_ptr<Shader>(new Shader());
   // Vertex
   GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -99,7 +99,7 @@ RefRes<Shader> Shader::create(const std::string &name,
   return shader;
 }
 
-Res<std::string> Shader::readFile(const std::string &filepath) {
+Res<std::string, EngineError> Shader::readFile(const std::string &filepath) {
   std::string res;
   std::ifstream in(filepath, std::ios::binary);
   if (in) {

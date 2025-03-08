@@ -5,6 +5,7 @@
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "engine/engine_error.hpp"
 #include "engine/types.hpp"
 
 struct WindowSpec {
@@ -18,7 +19,7 @@ class Window {
   /*
    * Constructors/Operators
    */
-  static RefRes<Window> create(const WindowSpec &);
+  static RefRes<Window, EngineError> create(const WindowSpec &);
   ~Window();
   Window(const Window &other) = delete;
   Window &operator=(const Window &other) = delete;
