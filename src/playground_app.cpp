@@ -162,10 +162,8 @@ void PlaygroundApp::showProgramSelector() {
     // Description
     {
       ImGui::BeginGroup();
-      ImGui::BeginChild(
-          "Details",
-          ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));  // Leave room for 1
-                                                            // line below us
+      ImGui::BeginChild("Details",
+                        ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
       if (m_State.SelectedProgram != nullptr) {
         ImGui::Text("%s", m_State.SelectedProgram->getName().c_str());
       } else {
