@@ -1,6 +1,7 @@
 #include "programs/textures.hpp"
 #include <cstdint>
 #include <iostream>
+#include <format>
 
 #include "engine/renderer/shader.hpp"
 #include "error.hpp"
