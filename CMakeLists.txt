@@ -80,7 +80,11 @@ add_executable(${PROJECT_NAME}
         ${DEPS}
         ${SOURCE_FILES})
 # Maybe we want to do this in a cmake preset.
-target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wextra -pedantic)
+if(MSVC)
+	target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+else()
+	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${DEPS_INCLUDE_DIR}
   ${PROJECT_INCLUDE_DIR}

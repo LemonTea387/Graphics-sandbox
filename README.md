@@ -16,6 +16,7 @@ It is a selector of 'scenes' that are different scenarios to play around with.
 ### Pre-requisites
 - `CMake >= v3.20`
 - `C++23 Compatible Compiler toolchain`
+- `Jinja2` : Glad loader Req, needs to be cleaned up.
 ### Building & Compiling
 ```
 cmake -B ./[build_dir]
