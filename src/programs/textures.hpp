@@ -3,8 +3,8 @@
 
 #include <glad/gl.h>
 #include <GL/gl.h>
-#include <memory>
 #include "programs/program.hpp"
+#include "tea/types.hpp"
 
 class Shader;
 
@@ -20,7 +20,7 @@ class TexturesProgram : public Program {
   /// TODO: Really, draft out some better system
   bool m_Active;
 
-  std::unique_ptr<Shader> m_Shader;
+  Ref<Shader> m_Shader;
   GLuint m_Vao;
   GLuint m_Vbo;
   GLuint m_Ebo;

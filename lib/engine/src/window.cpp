@@ -1,4 +1,4 @@
-#include "engine/window.hpp"
+#include "tea/window.hpp"
 #include <iostream>
 #include <memory>
 
@@ -9,7 +9,7 @@ void framebufSizeCallback([[maybe_unused]] GLFWwindow* window, int width,
 }
 }  // namespace
 
-RefRes<Window, EngineError> Window::create(const WindowSpec& spec) {
+Res<Ref<Window>, EngineError> Window::create(const WindowSpec& spec) {
   auto rw = std::unique_ptr<Window>(new Window());
 
   GLFWwindow* window =

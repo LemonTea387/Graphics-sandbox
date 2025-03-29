@@ -2,7 +2,7 @@
 #define PROGRAM_H
 
 #include <string>
-#include "engine/types.hpp"
+#include "tea/types.hpp"
 #include "error.hpp"
 class Program {
  public:
