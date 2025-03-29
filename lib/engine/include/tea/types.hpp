@@ -13,4 +13,7 @@ using Handle = std::shared_ptr<T>;
 template <class T, class E>
 using Res = std::expected<T, E>;
 
+template <class E>
+using Err = std::unexpected<E>;
+
 #endif

@@ -2,6 +2,10 @@
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 
+bool Logger::m_Initialized;
+Handle<spdlog::logger> Logger::s_Logger;
+Handle<spdlog::logger> Logger::s_ClientLogger;
+
 void Logger::init() {
   m_Initialized = true;
 

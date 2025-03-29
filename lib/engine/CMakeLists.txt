@@ -86,12 +86,16 @@ target_sources(${PROJECT_NAME}
 		include/tea/types.hpp
 		include/tea/window.hpp
 		include/tea/renderer/shader.hpp
+		include/tea/renderer/texture.hpp
+		include/tea/logging.hpp
 	PRIVATE
 		src/event.cpp
 		src/input.cpp
 		src/window.cpp
 		src/input.cpp
 		src/renderer/shader.cpp
+		src/renderer/texture.cpp
+		src/logging.cpp
 )
 # Maybe we want to do this in a cmake preset.
 if(MSVC)
@@ -111,4 +115,5 @@ ${PROJECT_NAME}
 PUBLIC OpenGL::GL glfw glm::glm glad_gl_core_41
 PRIVATE stb_image spdlog::spdlog_header_only
 )
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)

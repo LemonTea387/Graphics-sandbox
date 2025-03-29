@@ -26,6 +26,8 @@ class ImageMode {
         return GL_RGB;
       case RGBA:
         return GL_RGBA;
+      default:
+        return GL_RGB;
     }
   }
 
@@ -46,6 +48,8 @@ class Texture {
   [[nodiscard]]
   static Res<Ref<Texture>, EngineError> create(const std::string &path,
                                                Renderer::ImageMode mode);
+  /// slot is 0-based
+  Res<void, EngineError> bind(std::uint32_t slot);
 
  private:
   Texture();
