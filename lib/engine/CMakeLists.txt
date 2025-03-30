@@ -55,21 +55,6 @@ glad_add_library(glad_gl_core_41
 	EXTENSIONS NONE
 )
 
-# ## TODO: Make IMGUI avail by fetchcontent
-# # IMGUI
-# file(GLOB IMGUI_SRC
-# ${CMAKE_SOURCE_DIR}/lib/imgui/*.cpp
-# ${CMAKE_SOURCE_DIR}/lib/imgui/misc/cpp/imgui_stdlib.*
-# ${CMAKE_SOURCE_DIR}/lib/imgui/backends/imgui_impl_opengl3.cpp
-# ${CMAKE_SOURCE_DIR}/lib/imgui/backends/imgui_impl_glfw.cpp
-# )
-#
-# # External Dependencies
-# set(DEPS ${IMGUI_SRC})
-# set(DEPS_INCLUDE_DIR
-# "${CMAKE_SOURCE_DIR}/lib/imgui/"
-# )
-
 add_library(${PROJECT_NAME} STATIC)
 
 # Add source files
