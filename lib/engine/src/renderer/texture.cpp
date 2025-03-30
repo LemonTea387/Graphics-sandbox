@@ -19,12 +19,13 @@ Res<Ref<Texture>, EngineError> Texture::create(const std::string &path,
   std::uint8_t *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
   if (data == nullptr) {
     TEA_CORE_ERROR("Failed to load image {}", path);
-    return std::unexpected(EngineError::FILE_IO_ERROR);
+    return Err(EngineError::FILE_IO_ERROR);
   }
   glGenTextures(1, &created->m_TextureId);
+
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, created->m_TextureId);
-  glTexImage2D(GL_TEXTURE_2D, 0, mode.toGl(), width, height, 0, mode,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, mode.toGl(),
                GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);
   // set the texture wrapping/filtering options (on the currently bound texture
