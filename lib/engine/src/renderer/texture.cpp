@@ -18,13 +18,12 @@ Res<Ref<Texture>, EngineError> Texture::create(const std::string &path,
   stbi_set_flip_vertically_on_load(true);
   std::uint8_t *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
   if (data == nullptr) {
-    TEA_CORE_ERROR("Failed to load image %s", path);
+    TEA_CORE_ERROR("Failed to load image {}", path);
     return std::unexpected(EngineError::FILE_IO_ERROR);
   }
-  GLuint texture;
-  glGenTextures(1, &texture);
+  glGenTextures(1, &created->m_TextureId);
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, texture);
+  glBindTexture(GL_TEXTURE_2D, created->m_TextureId);
   glTexImage2D(GL_TEXTURE_2D, 0, mode.toGl(), width, height, 0, mode,
                GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);
