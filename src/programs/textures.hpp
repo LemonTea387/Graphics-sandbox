@@ -6,6 +6,8 @@
 #include "programs/program.hpp"
 #include "tea/types.hpp"
 
+class Texture;
+
 class Shader;
 
 class TexturesProgram : public Program {
@@ -20,12 +22,12 @@ class TexturesProgram : public Program {
   /// TODO: Really, draft out some better system
   bool m_Active;
 
-  Ref<Shader> m_Shader;
+  Ref<Shader> m_Shader{nullptr};
   GLuint m_Vao;
   GLuint m_Vbo;
   GLuint m_Ebo;
-  GLuint m_TextureContainer;
-  GLuint m_TextureFace;
+  Ref<Texture> m_TextureContainer{nullptr};
+  Ref<Texture> m_TextureFace{nullptr};
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "programs/textures.hpp"
 #include <cstdint>
+#include "tea/logging.hpp"
 #include "tea/renderer/shader.hpp"
 #include "tea/renderer/texture.hpp"
 #include "error.hpp"
@@ -8,14 +9,17 @@
 Res<void, Error> TexturesProgram::setup() {
   auto res = Texture::create("assets/container.jpg", Renderer::ImageMode::RGB);
   if (!res.has_value()) {
-    return std::unexpected(Error::GL_ERROR);
+    TEA_ERROR("Error creating container texture");
+    return Err(Error::ENGINE_ERROR);
   }
-  m_TextureContainer = *res;
+  m_TextureContainer = std::move(*res);
+
   res = Texture::create("assets/awesomeface.png", Renderer::ImageMode::RGBA);
   if (!res.has_value()) {
-    return std::unexpected(Error::GL_ERROR);
+    TEA_ERROR("Error creating awesomeface texture");
+    return Err(Error::ENGINE_ERROR);
   }
-  m_TextureFace = *res;
+  m_TextureFace = std::move(*res);
 
   // Draw manually
   float vertices[]{
@@ -57,7 +61,7 @@ Res<void, Error> TexturesProgram::setup() {
   auto shader = Shader::create("textures", "./shaders/textures.vert.glsl",
                                "./shaders/textures.frag.glsl");
   if (!shader.has_value()) {
-    return std::unexpected(Error::PROGRAM_ERROR);
+    return Err(Error::PROGRAM_ERROR);
   }
   m_Shader = std::move(*shader);
   m_Active = true;
@@ -72,10 +76,9 @@ void TexturesProgram::loop() {
   glClear(GL_COLOR_BUFFER_BIT);
 
   m_Shader->bind();
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, m_TextureContainer);
-  glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, m_TextureFace);
+  auto _ = m_TextureContainer->bind(0);
+  _ = m_TextureFace->bind(1);
+
   // Set which texture unit belongs to which uniform
   m_Shader->setInt("uniform_texture1", 0);
   m_Shader->setInt("uniform_texture2", 1);
@@ -97,8 +100,8 @@ void TexturesProgram::cleanup() {
   glDeleteBuffers(1, &m_Vbo);
   glDeleteBuffers(1, &m_Ebo);
   glDeleteVertexArrays(1, &m_Vao);
-  glDeleteTextures(1, &m_TextureContainer);
-  glDeleteTextures(1, &m_TextureFace);
+  m_TextureContainer.reset();
+  m_TextureFace.reset();
   m_Shader.reset();
   m_Active = false;
 }
