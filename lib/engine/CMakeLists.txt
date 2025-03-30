@@ -98,7 +98,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 target_link_libraries(
 ${PROJECT_NAME}
 PUBLIC OpenGL::GL glfw glm::glm glad_gl_core_41
-PRIVATE stb_image spdlog::spdlog_header_only
+PRIVATE stb_image spdlog::spdlog
 )
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
