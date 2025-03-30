@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <format>
 #include <iostream>
-#include "engine/window.hpp"
-#include "engine/engine_error.hpp"
+#include "tea/window.hpp"
+#include "tea/engine_error.hpp"
 #include "programs/program.hpp"
 
 #include <imgui.h>
@@ -18,7 +18,7 @@ constexpr ImVec2 WINDOW_SIZE{500, 440};
 constexpr ImVec2 LIST_SIZE{150, 0};
 };  // namespace DebugMenu
 
-RefRes<PlaygroundApp, EngineError> PlaygroundApp::create(
+Res<Ref<PlaygroundApp>, EngineError> PlaygroundApp::create(
     const ApplicationSpec& spec) {
   auto app = Ref<PlaygroundApp>(new PlaygroundApp());
 

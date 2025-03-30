@@ -3,6 +3,7 @@
 
 enum class Error {
   GENERIC_ERROR,
+  ENGINE_ERROR,
   IO_ERROR,
   PROGRAM_ERROR,
 };

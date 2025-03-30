@@ -10,11 +10,10 @@ It is a selector of 'scenes' that are different scenarios to play around with.
 - [ ] Graphics backend abstraction, scenes can use a common interface.
 - [ ] Vulkan?
 - [ ] Better errors, currently it's just a raw enum that tells us 0 details.
-- [ ] An actual logging system, currently doing cerr and it's horrible.
 
 ## Building
 ### Pre-requisites
-- `CMake >= v3.20`
+- `CMake >= v3.23`
 - `C++23 Compatible Compiler toolchain`
 - `Jinja2` : Glad loader Req, needs to be cleaned up.
 ### Building & Compiling

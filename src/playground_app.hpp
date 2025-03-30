@@ -4,8 +4,8 @@
 #include <expected>
 #include <unordered_map>
 
-#include "engine/application.hpp"
-#include "engine/types.hpp"
+#include "tea/application.hpp"
+#include "tea/types.hpp"
 
 class Program;
 class Window;
@@ -25,7 +25,7 @@ struct ProgramState {
 class PlaygroundApp : public Application {
  public:
   ~PlaygroundApp() override;
-  static RefRes<PlaygroundApp, EngineError> create(const ApplicationSpec &);
+  static Res<Ref<PlaygroundApp>, EngineError> create(const ApplicationSpec &);
   Window &getWindow() override;
   void run() override;
 

@@ -1,57 +1,25 @@
 #include "programs/textures.hpp"
 #include <cstdint>
-#include <iostream>
-#include <format>
-
-#include "engine/renderer/shader.hpp"
+#include "tea/logging.hpp"
+#include "tea/renderer/shader.hpp"
+#include "tea/renderer/texture.hpp"
 #include "error.hpp"
 #include "programs/triangle.hpp"
-#include "stb_image.h"
-
-namespace {
-Res<GLuint, Error> loadTexture(const std::string &file, GLint mode) {
-  std::int32_t width, height, nrChannels;
-  // Images are flipped since opengl expects y0.0 to be bottom.
-  stbi_set_flip_vertically_on_load(true);
-  std::uint8_t *data = stbi_load(file.c_str(), &width, &height, &nrChannels, 0);
-  if (data == nullptr) {
-    std::cerr << std::format("Failed to load image %s", file) << std::endl;
-    return std::unexpected(Error::IO_ERROR);
-  }
-  GLuint texture;
-  glGenTextures(1, &texture);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, mode,
-               GL_UNSIGNED_BYTE, data);
-  glGenerateMipmap(GL_TEXTURE_2D);
-  // set the texture wrapping/filtering options (on the currently bound texture
-  // object)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                  GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  glBindTexture(GL_TEXTURE_2D, texture);
-  // Free image
-  stbi_image_free(data);
-
-  return texture;
-}
-};  // namespace
 
 Res<void, Error> TexturesProgram::setup() {
-  auto res = loadTexture("assets/container.jpg", GL_RGB);
+  auto res = Texture::create("assets/container.jpg", Renderer::ImageMode::RGB);
   if (!res.has_value()) {
-    return std::unexpected(res.error());
+    TEA_ERROR("Error creating container texture");
+    return Err(Error::ENGINE_ERROR);
   }
-  m_TextureContainer = *res;
-  res = loadTexture("assets/awesomeface.png", GL_RGBA);
+  m_TextureContainer = std::move(*res);
+
+  res = Texture::create("assets/awesomeface.png", Renderer::ImageMode::RGBA);
   if (!res.has_value()) {
-    return std::unexpected(res.error());
+    TEA_ERROR("Error creating awesomeface texture");
+    return Err(Error::ENGINE_ERROR);
   }
-  m_TextureFace = *res;
+  m_TextureFace = std::move(*res);
 
   // Draw manually
   float vertices[]{
@@ -93,7 +61,7 @@ Res<void, Error> TexturesProgram::setup() {
   auto shader = Shader::create("textures", "./shaders/textures.vert.glsl",
                                "./shaders/textures.frag.glsl");
   if (!shader.has_value()) {
-    return std::unexpected(Error::PROGRAM_ERROR);
+    return Err(Error::PROGRAM_ERROR);
   }
   m_Shader = std::move(*shader);
   m_Active = true;
@@ -108,10 +76,9 @@ void TexturesProgram::loop() {
   glClear(GL_COLOR_BUFFER_BIT);
 
   m_Shader->bind();
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, m_TextureContainer);
-  glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, m_TextureFace);
+  auto _ = m_TextureContainer->bind(0);
+  _ = m_TextureFace->bind(1);
+
   // Set which texture unit belongs to which uniform
   m_Shader->setInt("uniform_texture1", 0);
   m_Shader->setInt("uniform_texture2", 1);
@@ -133,8 +100,8 @@ void TexturesProgram::cleanup() {
   glDeleteBuffers(1, &m_Vbo);
   glDeleteBuffers(1, &m_Ebo);
   glDeleteVertexArrays(1, &m_Vao);
-  glDeleteTextures(1, &m_TextureContainer);
-  glDeleteTextures(1, &m_TextureFace);
+  m_TextureContainer.reset();
+  m_TextureFace.reset();
   m_Shader.reset();
   m_Active = false;
 }

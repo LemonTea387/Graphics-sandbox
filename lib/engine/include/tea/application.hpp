@@ -1,5 +1,5 @@
-#ifndef ENGINE_APPLICATION_H
-#define ENGINE_APPLICATION_H
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
 #include <cstdint>
 #include <string>
