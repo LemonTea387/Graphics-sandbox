@@ -1,5 +1,5 @@
-#ifndef ENGINE_TYPES_H
-#define ENGINE_TYPES_H
+#ifndef TYPES_H
+#define TYPES_H
 
 #include <expected>
 #include <memory>
@@ -7,10 +7,13 @@
 template <class T>
 using Ref = std::unique_ptr<T>;
 
+template <class T>
+using Handle = std::shared_ptr<T>;
+
 template <class T, class E>
 using Res = std::expected<T, E>;
 
-template <class T, class E>
-using RefRes = std::expected<Ref<T>, E>;
+template <class E>
+using Err = std::unexpected<E>;
 
 #endif

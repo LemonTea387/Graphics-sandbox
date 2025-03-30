@@ -5,8 +5,8 @@
 #include <expected>
 #include <string>
 #include <glm/glm.hpp>
-#include "engine/types.hpp"
-#include "engine/engine_error.hpp"
+#include "tea/types.hpp"
+#include "tea/engine_error.hpp"
 
 class Shader {
  public:
@@ -34,7 +34,7 @@ class Shader {
 
   const std::string &getName() const;
 
-  [[nodiscard]] static RefRes<Shader, EngineError> create(
+  [[nodiscard]] static Res<Ref<Shader>, EngineError> create(
       const std::string &name, const std::string &vertex_path,
       const std::string &fragment_path);
 

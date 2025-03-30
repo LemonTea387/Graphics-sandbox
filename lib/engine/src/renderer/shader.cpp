@@ -1,4 +1,4 @@
-#include "engine/renderer/shader.hpp"
+#include "tea/renderer/shader.hpp"
 #include <glad/gl.h>
 #include <GL/gl.h>
 #include <glm/ext.hpp>
@@ -37,9 +37,9 @@ void Shader::setMat4(const std::string &name, const glm::mat4 &value) const {
                      glm::value_ptr(value));
 }
 
-RefRes<Shader, EngineError> Shader::create(const std::string &name,
-                                           const std::string &vertex_path,
-                                           const std::string &fragment_path) {
+Res<Ref<Shader>, EngineError> Shader::create(const std::string &name,
+                                             const std::string &vertex_path,
+                                             const std::string &fragment_path) {
   auto shader = std::unique_ptr<Shader>(new Shader());
   shader->m_Name = name;
 

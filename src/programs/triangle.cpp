@@ -1,5 +1,5 @@
 #include "programs/triangle.hpp"
-#include "engine/renderer/shader.hpp"
+#include "tea/renderer/shader.hpp"
 
 Res<void, Error> TriangleProgram::setup() {
   float vertices[] = {
