@@ -2,7 +2,6 @@
 #define SHADER_H
 
 #include <cstdint>
-#include <expected>
 #include <string>
 #include <glm/glm.hpp>
 #include "tea/types.hpp"
