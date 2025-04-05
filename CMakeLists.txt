@@ -42,6 +42,7 @@ target_sources(${PROJECT_NAME}
   src/playground_app.cpp
   src/programs/triangle.cpp
   src/programs/textures.cpp
+  src/programs/dvd_screensaver.cpp
 
   ## Imgui
   ${IMGUI_SRC}
