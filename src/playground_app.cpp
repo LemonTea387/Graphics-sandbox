@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <format>
 #include <iostream>
+#include "tea/logging.hpp"
 #include "tea/window.hpp"
 #include "tea/engine_error.hpp"
 #include "programs/program.hpp"
@@ -90,7 +91,7 @@ Window& PlaygroundApp::getWindow() { return *m_Window; }
 
 void PlaygroundApp::run() {
   if (m_ActiveProgram == nullptr) {
-    std::cerr << "No active program configured!" << std::endl;
+    TEA_ERROR("No active program configured");
     return;
   }
 
@@ -123,7 +124,7 @@ void PlaygroundApp::run() {
 
 void PlaygroundApp::runProgram(const std::string& name) {
   if (auto program = m_Programs.find(name); program == m_Programs.end()) {
-    std::cerr << std::format("No program {} found.", name);
+    TEA_ERROR("No program {} found", name);
     return;
   }
 
