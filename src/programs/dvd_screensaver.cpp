@@ -7,7 +7,7 @@
 ScreenSaverProgram::ScreenSaverProgram()
     : Program("Dvd Screen saver",
               "The thing we all like to see if it hits the corner or not.") {}
-ScreenSaverProgram::~ScreenSaverProgram() {}
+ScreenSaverProgram::~ScreenSaverProgram() { cleanup(); }
 
 Res<void, Error> ScreenSaverProgram::setup() {
   float vertices[] = {

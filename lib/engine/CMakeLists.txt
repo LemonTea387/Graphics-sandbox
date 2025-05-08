@@ -67,7 +67,8 @@ target_sources(${PROJECT_NAME}
 		include/tea/application.hpp
 		include/tea/engine_error.hpp
 		include/tea/event.hpp
-		include/tea/input.hpp
+		include/tea/input/input.hpp
+		include/tea/input/key_code.hpp
 		include/tea/types.hpp
 		include/tea/window.hpp
 		include/tea/renderer/shader.hpp
@@ -75,9 +76,8 @@ target_sources(${PROJECT_NAME}
 		include/tea/logging.hpp
 	PRIVATE
 		src/event.cpp
-		src/input.cpp
+		src/input/input.cpp
 		src/window.cpp
-		src/input.cpp
 		src/renderer/shader.cpp
 		src/renderer/texture.cpp
 		src/logging.cpp
@@ -100,5 +100,4 @@ ${PROJECT_NAME}
 PUBLIC OpenGL::GL glfw glm::glm glad_gl_core_41
 PRIVATE stb_image spdlog::spdlog
 )
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
