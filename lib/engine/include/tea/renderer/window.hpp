@@ -2,7 +2,6 @@
 #define WINDOW_H
 
 #include <cstdint>
-#include <expected>
 #include <string>
 
 #include <glad/gl.h>
@@ -27,7 +26,7 @@ class Window {
 
   void update();
 
-  void *getNativeWindow();
+  void *get_native_window();
 
  private:
   GLFWwindow *m_Window{nullptr};

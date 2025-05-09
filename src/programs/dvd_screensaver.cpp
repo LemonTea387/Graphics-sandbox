@@ -56,9 +56,9 @@ Res<void, Error> ScreenSaverProgram::setup() {
   }
   m_Shader = std::move(*shader_res);
   m_Shader->bind();
-  m_Shader->setFloat3("color", glm::vec3((double)rand() / (RAND_MAX),
-                                         ((double)rand() / RAND_MAX),
-                                         ((double)rand() / RAND_MAX)));
+  m_Shader->set_float3("color", glm::vec3((double)rand() / (RAND_MAX),
+                                          ((double)rand() / RAND_MAX),
+                                          ((double)rand() / RAND_MAX)));
   m_Shader->unbind();
 
   m_Velocity = {0.005, 0.005};
@@ -74,20 +74,20 @@ void ScreenSaverProgram::loop() {
   m_Offset += m_Velocity;
   if (m_Offset.x >= 0.8 || m_Offset.x <= -0.8) {
     m_Velocity.x = -m_Velocity.x;
-    m_Shader->setFloat3("color", glm::vec3((double)rand() / (RAND_MAX),
-                                           ((double)rand() / RAND_MAX),
-                                           ((double)rand() / RAND_MAX)));
+    m_Shader->set_float3("color", glm::vec3((double)rand() / (RAND_MAX),
+                                            ((double)rand() / RAND_MAX),
+                                            ((double)rand() / RAND_MAX)));
   }
   if (m_Offset.y >= 0.85 || m_Offset.y <= -0.85) {
     m_Velocity.y = -m_Velocity.y;
-    m_Shader->setFloat3("color", glm::vec3((double)rand() / (RAND_MAX),
-                                           ((double)rand() / RAND_MAX),
-                                           ((double)rand() / RAND_MAX)));
+    m_Shader->set_float3("color", glm::vec3((double)rand() / (RAND_MAX),
+                                            ((double)rand() / RAND_MAX),
+                                            ((double)rand() / RAND_MAX)));
   }
 
   auto _ = m_Texture->bind(0);
-  m_Shader->setInt("uniform_texture1", 0);
-  m_Shader->setFloat2("offset", m_Offset);
+  m_Shader->set_int("uniform_texture1", 0);
+  m_Shader->set_float2("offset", m_Offset);
 
   glBindVertexArray(m_Vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

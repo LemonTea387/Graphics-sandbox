@@ -70,14 +70,15 @@ target_sources(${PROJECT_NAME}
 		include/tea/input/input.hpp
 		include/tea/input/key_code.hpp
 		include/tea/types.hpp
-		include/tea/window.hpp
+		include/tea/renderer/window.hpp
 		include/tea/renderer/shader.hpp
 		include/tea/renderer/texture.hpp
 		include/tea/logging.hpp
 	PRIVATE
 		src/event.cpp
 		src/input/input.cpp
-		src/window.cpp
+		src/application.cpp
+		src/renderer/window.cpp
 		src/renderer/shader.cpp
 		src/renderer/texture.cpp
 		src/logging.cpp

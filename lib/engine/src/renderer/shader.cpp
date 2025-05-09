@@ -8,31 +8,31 @@
 
 void Shader::bind() const { glUseProgram(m_Program); }
 void Shader::unbind() const { glUseProgram(0); }
-void Shader::setBool(const std::string &name, bool value) const {
+void Shader::set_bool(const std::string &name, bool value) const {
   glUniform1i(glGetUniformLocation(m_Program, name.c_str()), (int)value);
 }
-void Shader::setInt(const std::string &name, int value) const {
+void Shader::set_int(const std::string &name, int value) const {
   glUniform1i(glGetUniformLocation(m_Program, name.c_str()), value);
 }
-void Shader::setIntArray(const std::string &name, int *values,
-                         std::uint32_t count) const {
+void Shader::set_int_array(const std::string &name, int *values,
+                           std::uint32_t count) const {
   glUniform1iv(glGetUniformLocation(m_Program, name.c_str()), count, values);
 }
-void Shader::setFloat(const std::string &name, float value) const {
+void Shader::set_float(const std::string &name, float value) const {
   glUniform1f(glGetUniformLocation(m_Program, name.c_str()), value);
 }
-void Shader::setFloat2(const std::string &name, const glm::vec2 &value) const {
+void Shader::set_float2(const std::string &name, const glm::vec2 &value) const {
   glUniform2f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y);
 }
-void Shader::setFloat3(const std::string &name, const glm::vec3 &value) const {
+void Shader::set_float3(const std::string &name, const glm::vec3 &value) const {
   glUniform3f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y,
               value.z);
 }
-void Shader::setFloat4(const std::string &name, const glm::vec4 &value) const {
+void Shader::set_float4(const std::string &name, const glm::vec4 &value) const {
   glUniform4f(glGetUniformLocation(m_Program, name.c_str()), value.x, value.y,
               value.z, value.a);
 }
-void Shader::setMat4(const std::string &name, const glm::mat4 &value) const {
+void Shader::set_mat4(const std::string &name, const glm::mat4 &value) const {
   glUniformMatrix4fv(glGetUniformLocation(m_Program, name.c_str()), 1, GL_FALSE,
                      glm::value_ptr(value));
 }
@@ -45,7 +45,7 @@ Res<Ref<Shader>, EngineError> Shader::create(const std::string &name,
 
   // Vertex
   GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-  auto read_res = readFile(vertex_path);
+  auto read_res = read_file(vertex_path);
   if (!read_res.has_value()) {
     return std::unexpected(read_res.error());
   }
@@ -66,7 +66,7 @@ Res<Ref<Shader>, EngineError> Shader::create(const std::string &name,
 
   // Fragment
   GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
-  read_res = readFile(fragment_path);
+  read_res = read_file(fragment_path);
   if (!read_res.has_value()) {
     return std::unexpected(read_res.error());
   }
@@ -107,7 +107,7 @@ Res<Ref<Shader>, EngineError> Shader::create(const std::string &name,
   return shader;
 }
 
-Res<std::string, EngineError> Shader::readFile(const std::string &filepath) {
+Res<std::string, EngineError> Shader::read_file(const std::string &filepath) {
   std::string res;
   std::ifstream in(filepath, std::ios::binary);
   if (in) {
@@ -128,7 +128,7 @@ Res<std::string, EngineError> Shader::readFile(const std::string &filepath) {
 
   return res;
 }
-const std::string &Shader::getName() const { return m_Name; }
+const std::string &Shader::get_name() const { return m_Name; }
 
 Shader::Shader() {}
 Shader::~Shader() {

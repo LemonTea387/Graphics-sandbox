@@ -20,7 +20,7 @@ class ImageMode {
   // Allows comparisons with Enum constants
   constexpr operator Enum() const { return m_E; }
   explicit operator bool() const = delete;
-  GLenum toGl() {
+  GLenum to_gl() {
     switch (m_E) {
       case RGB:
         return GL_RGB;

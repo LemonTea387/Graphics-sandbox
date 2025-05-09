@@ -25,7 +25,7 @@ Res<Ref<Texture>, EngineError> Texture::create(const std::string &path,
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, created->m_TextureId);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, mode.toGl(),
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, mode.to_gl(),
                GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);
   // set the texture wrapping/filtering options (on the currently bound texture

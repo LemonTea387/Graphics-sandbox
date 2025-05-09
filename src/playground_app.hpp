@@ -8,7 +8,7 @@
 
 class Program;
 class Window;
-enum class EngineError;
+enum class Error;
 
 /**
  * Mainly used for bridge of IMGUI with main app.
@@ -24,8 +24,7 @@ struct ProgramState {
 class PlaygroundApp : public Application {
  public:
   ~PlaygroundApp() override;
-  static Res<Ref<PlaygroundApp>, EngineError> create(const ApplicationSpec &);
-  Window &getWindow() override;
+  static Res<Ref<PlaygroundApp>, Error> create(const ApplicationSpec &);
   void run() override;
 
   /**
@@ -34,14 +33,13 @@ class PlaygroundApp : public Application {
    * one.
    * @note Should be called within the run loop.
    */
-  void runProgram(const std::string &name);
-  void registerProgram(Ref<Program> program);
+  void run_program(const std::string &name);
+  void register_program(Ref<Program> program);
 
  private:
   PlaygroundApp();
   Program *m_ActiveProgram{nullptr};
   std::unordered_map<std::string, Ref<Program>> m_Programs{};
-  Ref<Window> m_Window;
 
   // TODO: Maybe should move it out?
   ProgramState m_State{};

@@ -80,8 +80,8 @@ void TexturesProgram::loop() {
   _ = m_TextureFace->bind(1);
 
   // Set which texture unit belongs to which uniform
-  m_Shader->setInt("uniform_texture1", 0);
-  m_Shader->setInt("uniform_texture2", 1);
+  m_Shader->set_int("uniform_texture1", 0);
+  m_Shader->set_int("uniform_texture2", 1);
 
   glBindVertexArray(m_Vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

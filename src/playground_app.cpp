@@ -1,62 +1,31 @@
 #include "playground_app.hpp"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
-#include <cstdint>
-#include <format>
-#include <iostream>
 #include "tea/logging.hpp"
-#include "tea/window.hpp"
-#include "tea/engine_error.hpp"
+#include "tea/renderer/window.hpp"
 #include "programs/program.hpp"
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-constexpr std::uint8_t OPENGL_VERSION{41};
 namespace DebugMenu {
 constexpr ImVec2 WINDOW_SIZE{500, 440};
 constexpr ImVec2 LIST_SIZE{150, 0};
 };  // namespace DebugMenu
 
-Res<Ref<PlaygroundApp>, EngineError> PlaygroundApp::create(
+Res<Ref<PlaygroundApp>, Error> PlaygroundApp::create(
     const ApplicationSpec& spec) {
   auto app = Ref<PlaygroundApp>(new PlaygroundApp());
-
-  // Create Window
-  int res;
-  res = glfwInit();
-  if (res == GLFW_FALSE) {
-    std::cerr << "GLFW Init error" << std::endl;
-    return std::unexpected(EngineError::GLFW_ERROR);
+  auto res = app->init_components(spec);
+  if (!res.has_value()) {
+    TEA_ERROR("Error initializing components for application");
+    return Err<Error>(Error::ENGINE_ERROR);
   }
 
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_VERSION / 10);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_VERSION % 10);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-  WindowSpec window_spec{
-      .Title = spec.Title, .Width = spec.Width, .Height = spec.Height};
-  auto window = Window::create(window_spec);
-  if (!window.has_value()) {
-    std::cerr << "Window creation error" << std::endl;
-    return std::unexpected(window.error());
-  }
-  app->m_Window = std::move(*window);
-  // Set curr gl context
-  // TODO: Move this somewhere else.
-  glfwMakeContextCurrent((GLFWwindow*)app->m_Window->getNativeWindow());
-
-  int version = gladLoadGL(glfwGetProcAddress);
-  if (version == 0) {
-    std::cerr << "Failed to initialize GLAD";
-    glfwTerminate();
-    return std::unexpected(EngineError::GLAD_ERROR);
-  }
-
+  TEA_INFO("Initializing IMGUI");
   // TODO: maybe move somewhere?
-  // imgui
-  // State
+  // imgui State
   app->m_State = {};
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
@@ -70,7 +39,7 @@ Res<Ref<PlaygroundApp>, EngineError> PlaygroundApp::create(
 
   // Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(
-      (GLFWwindow*)app->m_Window->getNativeWindow(),
+      (GLFWwindow*)app->get_component<Window>().get_native_window(),
       true);  // Second param install_callback=true will install
               // GLFW callbacks and chain to existing ones.
   ImGui_ImplOpenGL3_Init();
@@ -84,10 +53,7 @@ PlaygroundApp::~PlaygroundApp() {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
-  glfwTerminate();
 }
-
-Window& PlaygroundApp::getWindow() { return *m_Window; }
 
 void PlaygroundApp::run() {
   if (m_ActiveProgram == nullptr) {
@@ -96,7 +62,7 @@ void PlaygroundApp::run() {
   }
 
   // Loop
-  auto window = (GLFWwindow*)m_Window->getNativeWindow();
+  auto window = (GLFWwindow*)this->get_component<Window>().get_native_window();
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -110,7 +76,7 @@ void PlaygroundApp::run() {
     // TODO: Make it event based
     if (m_State.Run && m_State.SelectedProgram != nullptr) {
       // Yes this is kinda dumb
-      runProgram(m_State.SelectedProgram->getName());
+      run_program(m_State.SelectedProgram->getName());
       m_State.Run = false;
     }
 
@@ -118,11 +84,11 @@ void PlaygroundApp::run() {
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    m_Window->update();
+    this->get_component<Window>().update();
   }
 }
 
-void PlaygroundApp::runProgram(const std::string& name) {
+void PlaygroundApp::run_program(const std::string& name) {
   if (auto program = m_Programs.find(name); program == m_Programs.end()) {
     TEA_ERROR("No program {} found", name);
     return;
@@ -138,7 +104,7 @@ void PlaygroundApp::runProgram(const std::string& name) {
   m_ActiveProgram->setup();
 }
 
-void PlaygroundApp::registerProgram(std::unique_ptr<Program> program) {
+void PlaygroundApp::register_program(std::unique_ptr<Program> program) {
   m_Programs.try_emplace(program->getName(), std::move(program));
 }
 

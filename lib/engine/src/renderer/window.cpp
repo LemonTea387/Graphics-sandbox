@@ -1,10 +1,10 @@
-#include "tea/window.hpp"
+#include "tea/renderer/window.hpp"
 #include <iostream>
 #include <memory>
 
 namespace {
-void framebufSizeCallback([[maybe_unused]] GLFWwindow* window, int width,
-                          int height) {
+void framebuf_size_callback([[maybe_unused]] GLFWwindow* window, int width,
+                            int height) {
   glViewport(0, 0, width, height);
 }
 }  // namespace
@@ -20,14 +20,14 @@ Res<Ref<Window>, EngineError> Window::create(const WindowSpec& spec) {
   }
   rw->m_Window = window;
   // Handle resize events
-  glfwSetFramebufferSizeCallback(window, framebufSizeCallback);
+  glfwSetFramebufferSizeCallback(window, framebuf_size_callback);
 
   return rw;
 }
 
 void Window::update() { glfwSwapBuffers(m_Window); }
 
-void* Window::getNativeWindow() { return m_Window; }
+void* Window::get_native_window() { return m_Window; }
 
 Window::Window() {}
 Window::~Window() {}

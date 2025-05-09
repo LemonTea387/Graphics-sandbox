@@ -1,30 +1,42 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include <bitset>
 #include <cstdint>
 #include <string>
+#include "tea/engine_error.hpp"
+#include "tea/input/input.hpp"
+#include "tea/renderer/window.hpp"
 
-class Window;
+#define FEATURE_WINDOW 1 << 0
 
 struct ApplicationSpec {
   std::string Title;
   std::uint32_t Width;
   std::uint32_t Height;
+  std::bitset<8> Features;
 };
 
 class Application {
  public:
+  virtual void run() = 0;
   virtual ~Application() = 0;
-  Application() = default;
+  Application();
   Application(const Application &other) = delete;
   Application(const Application &&other) = delete;
   Application &operator=(const Application &other) = delete;
   Application &operator=(const Application &&other) = delete;
 
-  virtual Window &getWindow() = 0;
-  virtual void run() = 0;
-};
+  [[nodiscard]] Res<void, EngineError> init_components(const ApplicationSpec &);
 
-// Cheeky hack for satisfying pure virtual destructors.
-inline Application::~Application() {}
+  // TODO: Have a better system than this
+  template <class T>
+  T &get_component();
+
+ private:
+  Ref<Window> m_Window{nullptr};
+  Ref<Input> m_Input{nullptr};
+
+  ApplicationSpec m_Spec;
+};
 #endif
