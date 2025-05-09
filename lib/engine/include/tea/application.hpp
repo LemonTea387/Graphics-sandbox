@@ -29,13 +29,14 @@ class Application {
 
   [[nodiscard]] Res<void, EngineError> init_components(const ApplicationSpec &);
 
+  double get_time() const;
   // TODO: Have a better system than this
   template <class T>
-  T &get_component();
+  Res<Ref<T>, EngineError> get_component();
 
  private:
-  Ref<Window> m_Window{nullptr};
-  Ref<Input> m_Input{nullptr};
+  Box<Window> m_Window{nullptr};
+  Box<Input> m_Input{nullptr};
 
   ApplicationSpec m_Spec;
 };

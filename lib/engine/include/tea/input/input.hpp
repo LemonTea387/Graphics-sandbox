@@ -8,7 +8,7 @@ class Application;
 
 class Input {
  public:
-  [[nodiscard]] static Res<Ref<Input>, EngineError> create(Application &);
+  [[nodiscard]] static Res<Box<Input>, EngineError> create(Application &);
   ~Input() = default;
   Input(const Input &) = delete;
   Input(Input &&) = delete;

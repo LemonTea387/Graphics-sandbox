@@ -17,7 +17,7 @@ struct WindowSpec {
 
 class Window {
  public:
-  [[nodiscard]] static Res<Ref<Window>, EngineError> create(const WindowSpec &);
+  [[nodiscard]] static Res<Box<Window>, EngineError> create(const WindowSpec &);
   ~Window();
   Window(const Window &other) = delete;
   Window &operator=(const Window &other) = delete;

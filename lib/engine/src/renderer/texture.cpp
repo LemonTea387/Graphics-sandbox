@@ -9,7 +9,7 @@
 
 constexpr std::uint32_t BASE_TEXTURE_ADDR = GL_TEXTURE0;
 
-Res<Ref<Texture>, EngineError> Texture::create(const std::string &path,
+Res<Box<Texture>, EngineError> Texture::create(const std::string &path,
                                                Renderer::ImageMode mode) {
   auto created = new Texture();
 
@@ -38,7 +38,7 @@ Res<Ref<Texture>, EngineError> Texture::create(const std::string &path,
   // Free image
   stbi_image_free(data);
 
-  return Ref<Texture>(created);
+  return Box<Texture>(created);
 }
 
 Res<void, EngineError> Texture::bind(std::uint32_t slot) {

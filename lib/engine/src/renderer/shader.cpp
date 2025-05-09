@@ -37,7 +37,7 @@ void Shader::set_mat4(const std::string &name, const glm::mat4 &value) const {
                      glm::value_ptr(value));
 }
 
-Res<Ref<Shader>, EngineError> Shader::create(const std::string &name,
+Res<Box<Shader>, EngineError> Shader::create(const std::string &name,
                                              const std::string &vertex_path,
                                              const std::string &fragment_path) {
   auto shader = std::unique_ptr<Shader>(new Shader());

@@ -24,7 +24,7 @@ struct ProgramState {
 class PlaygroundApp : public Application {
  public:
   ~PlaygroundApp() override;
-  static Res<Ref<PlaygroundApp>, Error> create(const ApplicationSpec &);
+  static Res<Box<PlaygroundApp>, Error> create(const ApplicationSpec &);
   void run() override;
 
   /**
@@ -34,12 +34,12 @@ class PlaygroundApp : public Application {
    * @note Should be called within the run loop.
    */
   void run_program(const std::string &name);
-  void register_program(Ref<Program> program);
+  void register_program(Box<Program> program);
 
  private:
   PlaygroundApp();
   Program *m_ActiveProgram{nullptr};
-  std::unordered_map<std::string, Ref<Program>> m_Programs{};
+  std::unordered_map<std::string, Box<Program>> m_Programs{};
 
   // TODO: Maybe should move it out?
   ProgramState m_State{};

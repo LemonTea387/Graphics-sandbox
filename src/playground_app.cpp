@@ -14,9 +14,9 @@ constexpr ImVec2 WINDOW_SIZE{500, 440};
 constexpr ImVec2 LIST_SIZE{150, 0};
 };  // namespace DebugMenu
 
-Res<Ref<PlaygroundApp>, Error> PlaygroundApp::create(
+Res<Box<PlaygroundApp>, Error> PlaygroundApp::create(
     const ApplicationSpec& spec) {
-  auto app = Ref<PlaygroundApp>(new PlaygroundApp());
+  auto app = Box<PlaygroundApp>(new PlaygroundApp());
   auto res = app->init_components(spec);
   if (!res.has_value()) {
     TEA_ERROR("Error initializing components for application");
@@ -39,7 +39,7 @@ Res<Ref<PlaygroundApp>, Error> PlaygroundApp::create(
 
   // Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(
-      (GLFWwindow*)app->get_component<Window>().get_native_window(),
+      (GLFWwindow*)app->get_component<Window>()->get().get_native_window(),
       true);  // Second param install_callback=true will install
               // GLFW callbacks and chain to existing ones.
   ImGui_ImplOpenGL3_Init();
@@ -62,7 +62,8 @@ void PlaygroundApp::run() {
   }
 
   // Loop
-  auto window = (GLFWwindow*)this->get_component<Window>().get_native_window();
+  auto window =
+      (GLFWwindow*)this->get_component<Window>()->get().get_native_window();
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -84,7 +85,7 @@ void PlaygroundApp::run() {
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    this->get_component<Window>().update();
+    this->get_component<Window>()->get().update();
   }
 }
 

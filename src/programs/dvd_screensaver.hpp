@@ -19,11 +19,11 @@ class ScreenSaverProgram : public Program {
   void cleanup() override;
 
  private:
-  Ref<Shader> m_Shader{nullptr};
+  Box<Shader> m_Shader{nullptr};
   GLuint m_Vao;
   GLuint m_Vbo;
   GLuint m_Ebo;
-  Ref<Texture> m_Texture{nullptr};
+  Box<Texture> m_Texture{nullptr};
 
   glm::vec2 m_Velocity{};
   glm::vec2 m_Offset{};

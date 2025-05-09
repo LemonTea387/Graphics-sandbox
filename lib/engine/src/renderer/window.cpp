@@ -9,7 +9,7 @@ void framebuf_size_callback([[maybe_unused]] GLFWwindow* window, int width,
 }
 }  // namespace
 
-Res<Ref<Window>, EngineError> Window::create(const WindowSpec& spec) {
+Res<Box<Window>, EngineError> Window::create(const WindowSpec& spec) {
   auto rw = std::unique_ptr<Window>(new Window());
 
   GLFWwindow* window =

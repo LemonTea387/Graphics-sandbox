@@ -46,7 +46,7 @@ class Texture {
   Texture &operator=(const Texture &&) = delete;
 
   [[nodiscard]]
-  static Res<Ref<Texture>, EngineError> create(const std::string &path,
+  static Res<Box<Texture>, EngineError> create(const std::string &path,
                                                Renderer::ImageMode mode);
   /// slot is 0-based
   Res<void, EngineError> bind(std::uint32_t slot);

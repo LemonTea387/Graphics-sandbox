@@ -5,15 +5,16 @@
 
 #include <GLFW/glfw3.h>
 
-Res<Ref<Input>, EngineError> Input::create(Application& app) {
-  auto input = Ref<Input>(new Input(app));
+Res<Box<Input>, EngineError> Input::create(Application& app) {
+  auto input = Box<Input>(new Input(app));
   return input;
 }
 
 Input::Input(Application& app) : m_App{app} {}
 
 bool Input::is_key_pressed(KeyCode key) {
-  auto window = (GLFWwindow*)m_App.get_component<Window>().get_native_window();
+  auto window =
+      (GLFWwindow*)m_App.get_component<Window>()->get().get_native_window();
   int state = glfwGetKey(window, static_cast<int>(key));
   return state == GLFW_PRESS;
 }

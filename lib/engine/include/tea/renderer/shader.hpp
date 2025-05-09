@@ -33,7 +33,7 @@ class Shader {
 
   const std::string &get_name() const;
 
-  [[nodiscard]] static Res<Ref<Shader>, EngineError> create(
+  [[nodiscard]] static Res<Box<Shader>, EngineError> create(
       const std::string &name, const std::string &vertex_path,
       const std::string &fragment_path);
 

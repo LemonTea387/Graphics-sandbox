@@ -22,12 +22,12 @@ class TexturesProgram : public Program {
   /// TODO: Really, draft out some better system
   bool m_Active;
 
-  Ref<Shader> m_Shader{nullptr};
+  Box<Shader> m_Shader{nullptr};
   GLuint m_Vao;
   GLuint m_Vbo;
   GLuint m_Ebo;
-  Ref<Texture> m_TextureContainer{nullptr};
-  Ref<Texture> m_TextureFace{nullptr};
+  Box<Texture> m_TextureContainer{nullptr};
+  Box<Texture> m_TextureFace{nullptr};
 };
 
 #endif
