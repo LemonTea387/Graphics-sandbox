@@ -69,15 +69,11 @@ double Application::get_time() const { return glfwGetTime(); }
 
 template <>
 Res<Ref<Window>, EngineError> Application::get_component<Window>() {
-  if (m_Window) {
-    return Res<Ref<Window>, EngineError>{*m_Window};
-  }
-  return Err<EngineError>(EngineError::COMPONENT_NOT_INITIALIZED);
+  return m_Window ? Res<Ref<Window>, EngineError>{*m_Window}
+                  : Err<EngineError>(EngineError::COMPONENT_NOT_INITIALIZED);
 }
 template <>
 Res<Ref<Input>, EngineError> Application::get_component<Input>() {
-  if (m_Input) {
-    return Res<Ref<Input>, EngineError>{*m_Input};
-  }
-  return Err<EngineError>(EngineError::COMPONENT_NOT_INITIALIZED);
+  return m_Input ? Res<Ref<Input>, EngineError>{*m_Input}
+                 : Err<EngineError>(EngineError::COMPONENT_NOT_INITIALIZED);
 }
