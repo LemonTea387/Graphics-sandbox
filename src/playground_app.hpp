@@ -24,7 +24,7 @@ struct ProgramState {
 class PlaygroundApp : public Application {
  public:
   ~PlaygroundApp() override;
-  static Res<Box<PlaygroundApp>, Error> create(const ApplicationSpec &);
+  PlaygroundApp();
   void run() override;
 
   /**
@@ -37,7 +37,6 @@ class PlaygroundApp : public Application {
   void register_program(Box<Program> program);
 
  private:
-  PlaygroundApp();
   Program *m_ActiveProgram{nullptr};
   std::unordered_map<std::string, Box<Program>> m_Programs{};
 

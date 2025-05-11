@@ -4,6 +4,8 @@
 #include <string>
 #include "tea/types.hpp"
 #include "error.hpp"
+class Application;
+
 class Program {
  public:
   virtual ~Program() = 0;
@@ -15,7 +17,7 @@ class Program {
   Program &operator=(const Program &&other) = delete;
 
   virtual Res<void, Error> setup() = 0;
-  virtual void loop() = 0;
+  virtual void loop(Application &) = 0;
   virtual void cleanup() = 0;
   [[nodiscard]] const std::string &getDescription() const {
     return m_Description;

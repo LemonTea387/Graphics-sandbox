@@ -71,7 +71,7 @@ Res<void, Error> TexturesProgram::setup() {
   return Res<void, Error>{};
 }
 
-void TexturesProgram::loop() {
+void TexturesProgram::loop(Application &) {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 

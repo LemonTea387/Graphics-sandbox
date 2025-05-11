@@ -15,7 +15,7 @@ class TexturesProgram : public Program {
   TexturesProgram();
   ~TexturesProgram() override;
   Res<void, Error> setup() override;
-  void loop() override;
+  void loop(Application&) override;
   void cleanup() override;
 
  private:

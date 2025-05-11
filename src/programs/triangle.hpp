@@ -13,7 +13,7 @@ class TriangleProgram : public Program {
   TriangleProgram();
   ~TriangleProgram() override;
   Res<void, Error> setup() override;
-  void loop() override;
+  void loop(Application&) override;
   void cleanup() override;
 
  private:

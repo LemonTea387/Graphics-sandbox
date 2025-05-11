@@ -1,6 +1,7 @@
 #include "playground_app.hpp"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "tea/application.hpp"
 #include "tea/logging.hpp"
 #include "tea/renderer/window.hpp"
 #include "programs/program.hpp"
@@ -8,25 +9,28 @@
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+#include <cstdlib>
 
 namespace DebugMenu {
 constexpr ImVec2 WINDOW_SIZE{500, 440};
 constexpr ImVec2 LIST_SIZE{150, 0};
 };  // namespace DebugMenu
 
-Res<Box<PlaygroundApp>, Error> PlaygroundApp::create(
-    const ApplicationSpec& spec) {
-  auto app = Box<PlaygroundApp>(new PlaygroundApp());
-  auto res = app->init_components(spec);
+PlaygroundApp::PlaygroundApp() : Application() {
+  ApplicationSpec spec{.Title = "Playground!",
+                       .Width = 800,
+                       .Height = 600,
+                       .Features = FEATURE_WINDOW};
+  auto res = this->init_components(spec);
   if (!res.has_value()) {
     TEA_ERROR("Error initializing components for application");
-    return Err<Error>(Error::ENGINE_ERROR);
+    std::exit(EXIT_FAILURE);
   }
 
   TEA_INFO("Initializing IMGUI");
   // TODO: maybe move somewhere?
   // imgui State
-  app->m_State = {};
+  m_State = {};
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
@@ -39,15 +43,11 @@ Res<Box<PlaygroundApp>, Error> PlaygroundApp::create(
 
   // Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(
-      (GLFWwindow*)app->get_component<Window>()->get().get_native_window(),
+      (GLFWwindow*)get_component<Window>()->get().get_native_window(),
       true);  // Second param install_callback=true will install
               // GLFW callbacks and chain to existing ones.
   ImGui_ImplOpenGL3_Init();
-
-  return app;
 }
-
-PlaygroundApp::PlaygroundApp() : Application() {}
 
 PlaygroundApp::~PlaygroundApp() {
   ImGui_ImplOpenGL3_Shutdown();
@@ -62,8 +62,7 @@ void PlaygroundApp::run() {
   }
 
   // Loop
-  auto window =
-      (GLFWwindow*)this->get_component<Window>()->get().get_native_window();
+  auto window = (GLFWwindow*)get_component<Window>()->get().get_native_window();
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -81,7 +80,7 @@ void PlaygroundApp::run() {
       m_State.Run = false;
     }
 
-    m_ActiveProgram->loop();
+    m_ActiveProgram->loop(*this);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
